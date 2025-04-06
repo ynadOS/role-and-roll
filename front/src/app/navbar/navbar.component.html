@@ -1,0 +1,48 @@
+<nav class=" py-4">
+    <header class="bg-white shadow-md py-6">
+      <div class="container mx-auto flex items-center justify-between">
+        <a href="/" class="text-2xl font-bold text-gray-900">
+          <span class="text-blue-500">Role</span> & Roll
+        </a>
+        <nav>
+          <ul class="flex space-x-6">
+            <li><a href="/campaigns" class="text-gray-700 hover:text-blue-500">Campagnes</a></li>
+            <li><a href="/characters" class="text-gray-700 hover:text-blue-500">Personnages</a></li>
+            <li><a href="/tools" class="text-gray-700 hover:text-blue-500">Outils</a></li>
+            <li><a href="/login" class="text-gray-700 hover:text-blue-500">Connexion</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+  </nav>
+<!-- 
+  <nav class="bg-gray-800 py-4 text-white">
+    <div class="container mx-auto flex items-center justify-between">
+      <a routerLink="/" class="text-xl font-bold">Role & Roll</a>
+      <ul class="flex space-x-6">
+        <ng-container *ngIf="!isLoggedIn">
+          <li>
+            <a routerLink="/concept" class="hover:text-gray-300">Concept</a>
+          </li>
+          <li>
+            <a routerLink="/login" class="hover:text-gray-300">Connexion</a>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="isLoggedIn">
+          <li>
+            <a routerLink="/campaigns" class="hover:text-gray-300">Campagnes</a>
+          </li>
+          <li>
+            <a routerLink="/characters" class="hover:text-gray-300">Personnages</a>
+          </li>
+          <li>
+            <a routerLink="/tools" class="hover:text-gray-300">Outils</a>
+          </li>
+          <li>
+            <button (click)="logout()" class="hover:text-gray-300" style="cursor: pointer;">Se Déconnecter</button>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </nav> -->

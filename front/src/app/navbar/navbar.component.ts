@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router'; // Pour la navigation
+import { DarkModeService } from '../services/dark-mode.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,8 +10,8 @@ import { RouterModule } from '@angular/router'; // Pour la navigation
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  // Optionnel : Des données comme le titre du site
   siteTitle = 'Role & Roll'; 
+
 }
 
 // import { Component, OnInit } from '@angular/core';

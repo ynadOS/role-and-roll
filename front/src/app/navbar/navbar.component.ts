@@ -1,42 +1,47 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router'; // Pour la navigation
-import { DarkModeService } from '../services/dark-mode.service';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule], // Nécessaire pour routerLink
+  imports: [RouterModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  siteTitle = 'Role & Roll'; 
+  isDarkMode = false;
+  isBrowser: boolean;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    if (this.isBrowser) {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      this.isDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+      this.applyTheme();
+    }
+  }
+
+  toggleDarkMode(): void {
+    if (!this.isBrowser) return;
+
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    this.applyTheme();
+  }
+
+  applyTheme(): void {
+    if (!this.isBrowser) return;
+
+    const htmlEl = document.documentElement;
+    if (this.isDarkMode) {
+      htmlEl.classList.add('dark');
+    } else {
+      htmlEl.classList.remove('dark');
+    }
+  }
 }
-
-// import { Component, OnInit } from '@angular/core';
-// import { RouterModule } from '@angular/router'; // Pour routerLink
-// import { AuthService } from '../auth.service'; // Votre service d'authentification (à créer)
-
-// @Component({
-//   selector: 'app-navbar',
-//   standalone: true,
-//   imports: [RouterModule],
-//   templateUrl: './navbar.component.html',
-//   styleUrl: './navbar.component.css'
-// })
-// export class NavbarComponent implements OnInit {
-//   isLoggedIn = false;
-
-//   constructor(private authService: AuthService) { }
-
-//   ngOnInit() {
-//     this.authService.isAuthenticated$.subscribe(loggedIn => {
-//       this.isLoggedIn = loggedIn;
-//     });
-//   }
-
-//   logout() {
-//     this.authService.logout();
-//   }
-// }

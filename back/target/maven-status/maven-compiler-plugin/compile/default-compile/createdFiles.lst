@@ -1,3 +1,5 @@
+com/rolenroll/rnr_app/entities/User.class
+com/rolenroll/rnr_app/controllers/HelloWorldController.class
+com/rolenroll/rnr_app/repositories/UserRepository.class
 com/rolenroll/rnr_app/RnrAppApplication.class
 com/rolenroll/rnr_app/config/SecurityConfig.class
-com/rolenroll/rnr_app/controllers/HelloWorldController.class

@@ -1,3 +1,5 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/RnrAppApplication.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/config/SecurityConfig.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/HelloWorldController.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities 2/User.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/repositories/UserRepository.java

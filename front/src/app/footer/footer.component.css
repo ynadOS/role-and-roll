@@ -1,0 +1,5 @@
+/* Ombre uniquement en haut du footer */
+.shadow-top {
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce vers le haut */
+  }
+  

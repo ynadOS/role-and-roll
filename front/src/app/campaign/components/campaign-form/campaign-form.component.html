@@ -1,0 +1,62 @@
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md">
+    <!-- Titre de la page -->
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Créer une Campagne</h2>
+    
+    <!-- Formulaire de création -->
+    <form class="space-y-4">
+      <!-- Nom de la Campagne -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la Campagne:</label>
+        <input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400 sm:text-sm" placeholder="Entrez le nom de la campagne">
+      </div>
+  
+      <!-- Description de la campagne -->
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description:</label>
+        <textarea id="description" name="description" rows="3" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400" placeholder="Entrez une description"></textarea>
+      </div>
+  
+      <!-- Univers -->
+      <div>
+        <label for="universe" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Univers:</label>
+        <select id="universe" name="universe" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
+          <option value="">Sélectionnez un univers</option>
+          <option value="fantasy">Fantaisie</option>
+          <option value="sci-fi">Science-Fiction</option>
+          <option value="modern">Moderne</option>
+        </select>
+      </div>
+  
+      <!-- Personnages -->
+      <div>
+        <label for="characters" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Personnages:</label>
+        <select id="characters" name="characters" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
+          <option value="">Sélectionnez un personnage</option>
+          <option value="character1">Personnage 1</option>
+          <option value="character2">Personnage 2</option>
+        </select>
+        <button type="button" class="inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">+</button>
+      </div>
+      <!-- Statut -->
+<!-- Statut -->
+<div>
+  <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut:</label>
+  <select id="status" name="status" [(ngModel)]="selectedStatusId"
+    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
+    <option value="">Sélectionnez un statut</option>
+    <option *ngFor="let status of statuses" [value]="status.id">{{ status.name }}</option>
+  </select>
+</div>
+
+
+  
+      <!-- Bouton Créer -->
+      <div>
+        <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-700 dark:hover:bg-indigo-600 dark:focus:ring-indigo-500">
+          Créer
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

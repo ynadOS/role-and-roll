@@ -1,7 +1,12 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/RnrAppApplication.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/config/SecurityConfig.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/AuthController.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/HelloWorldController.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/StatusController.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/UserDTO.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/auth/AuthRequestDTO.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/auth/AuthResponseDTO.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/auth/RegisterRequestDTO.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/Campaign.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/CharacterClass.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/File.java
@@ -17,5 +22,9 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/Story.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/Universe.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/User.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/mappers/UserMapper.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/repositories/StatusRepository.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/repositories/UserRepository.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/CustomUserDetailsService.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/JwtFilter.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/JwtService.java

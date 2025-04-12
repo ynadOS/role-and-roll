@@ -1,81 +1,70 @@
 <div class="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
   <div class="bg-white dark:bg-gray-800 p-10 rounded-xl shadow-2xl w-full max-w-sm">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <!-- Logo avec lien vers la page d'accueil -->
       <a href="/" class="flex justify-center">
-        <img class="h-20 w-auto" src="images/logo.png" alt="RoleNRoll Logo">
-      </a>
+        <img src="images/logo.png" alt="Logo site" class="h-20 dark:hidden" />
+        <img src="images/logo-dark.png" alt="Logo site" class="h-12 hidden dark:block" />      </a>
       <h2 class="mt-10 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
         Connexion
       </h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
-        <!-- Champ Email -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-900 dark:text-gray-300">
-            Adresse e-mail
+            <label for="email" class="block text-sm font-medium text-gray-900 dark:text-gray-300">
+            Nom d'utilisateur ou courriel
           </label>
           <div class="mt-2">
-            <input type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-base text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent placeholder:text-gray-400 sm:text-sm">
+            <input formControlName="username" type="text" id="username" required autocomplete="email"
+              class="block w-full rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-base text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent placeholder:text-gray-400 sm:text-sm" />
           </div>
         </div>
-
-        <!-- Champ Mot de passe -->
+      
         <div>
-          <div class="flex items-center justify-between">
-            <label for="password" class="block text-sm font-medium text-gray-900 dark:text-gray-300">
-              Mot de passe
-            </label>
-            <div class="text-sm">
-              <a href="/forgot-password" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
-                Mot de passe oublié ?
-              </a>
-            </div>
-          </div>
+          <label for="password" class="block text-sm font-medium text-gray-900 dark:text-gray-300">
+            Mot de passe
+          </label>
           <div class="mt-2">
-            <input type="password" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-base text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent placeholder:text-gray-400 sm:text-sm">
+            <input formControlName="password" type="password" id="password" required autocomplete="current-password"
+              class="block w-full rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-base text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent placeholder:text-gray-400 sm:text-sm" />
           </div>
         </div>
-
-        <!-- Bouton Connexion -->
+      
+        <div *ngIf="error" class="text-red-500 text-sm">{{ error }}</div>
+      
+        <div *ngIf="success" class="text-green-600 text-sm font-semibold">
+          Connexion réussie. Redirection dans {{ countdown }}...
+        </div>
+      
         <div>
-          <button type="submit" 
-          class="flex w-full justify-center items-center rounded-md bg-indigo-600 hover:bg-indigo-700 text-sm font-semibold text-white py-3 px-6 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-700 dark:hover:bg-indigo-600">
-            Se connecter
-        </button>
-        
+          <button type="submit"
+            [disabled]="isLoading"
+            class="flex w-full justify-center items-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-sm font-semibold text-white py-3 px-6 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-700 dark:hover:bg-indigo-600">
+            
+            <ng-container *ngIf="isLoading; else buttonText">
+              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                  stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+                </path>
+              </svg>
+            </ng-container>
+            <ng-template #buttonText>Se connecter</ng-template>
+          </button>
         </div>
       </form>
+      
 
-      <!-- Inscription -->
       <p class="mt-10 text-center text-sm text-gray-500 dark:text-gray-400">
         Pas de compte ?
-        <a href="/register" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
-          Inscrivez-vousdd
+        <a routerLink="/register"
+          class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+          Inscrivez-vous
         </a>
       </p>
     </div>
   </div>
 </div>
-
-<script>
-  // Fonction pour ajuster le mode jour/sombre en fonction de l'heure
-  function updateMode() {
-    const now = new Date();
-    const hours = now.getHours();
-
-    if (hours >= 6 && hours < 11) {
-      // Mode jour (entre 6h et 18h)
-      document.documentElement.classList.remove('dark');  // Enlève le mode sombre
-    } else {
-      // Mode sombre (entre 18h et 6h)
-      document.documentElement.classList.add('dark');  // Ajoute le mode sombre
-    }
-  }
-
-  // Appel de la fonction pour ajuster le mode au chargement de la page
-  updateMode();
-</script>
-

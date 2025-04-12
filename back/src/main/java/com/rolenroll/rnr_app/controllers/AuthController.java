@@ -49,13 +49,18 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request) {
         Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password())
+                new UsernamePasswordAuthenticationToken(
+                        request.username(), // ✅ plus request.email()
+                        request.password()
+                )
         );
 
-        User user = userRepository.findByEmail(request.email())
+        User user = userRepository.findByName(request.username())
+                .or(() -> userRepository.findByEmail(request.username()))
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
         String token = jwtService.generateToken(user);
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
+
 }

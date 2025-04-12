@@ -1,69 +1,76 @@
 <div class="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
   <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md">
-    <!-- Logo avec lien vers la page d'accueil -->
-    <a href="/" class="flex justify-center mb-6">
-      <img class="h-20 w-auto" src="images/logo.png" alt="RoleNRoll Logo">
-    </a>
+    <a routerLink="/" class="flex justify-center mb-6">
+      <img src="images/logo.png" alt="Logo site" class="h-12 dark:hidden" />
+      <img src="images/logo-dark.png" alt="Logo site" class="h-12 hidden dark:block" />    </a>
 
-    <!-- Titre de la page d'inscription -->
     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">Inscription</h2>
-    
-    <!-- Formulaire d'inscription -->
-    <form>
-      <!-- Champ Nom -->
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nom -->
       <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-2">Nom</label>
-        <input type="text" id="name" class="w-full px-3 py-2 border rounded-md border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:bg-gray-700 dark:text-white dark:focus:ring-indigo-400" placeholder="Votre nom" required>
+        <label for="name" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-2">Nom, pseudo</label>
+        <input formControlName="name" id="name" type="text" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 border-gray-300 focus:ring-indigo-600 focus:outline-none" required />
+        <div *ngIf="hasError('name', 'required')" class="text-red-500 text-sm mt-1">Le nom est requis.</div>
+        <div *ngIf="hasError('name', 'minlength')" class="text-red-500 text-sm mt-1">Le nom doit contenir au moins 2 caractères.</div>
       </div>
 
-      <!-- Champ Email -->
+      <!-- Email -->
       <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-2">Adresse e-mail</label>
-        <input type="email" id="email" class="w-full px-3 py-2 border rounded-md border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:bg-gray-700 dark:text-white dark:focus:ring-indigo-400" placeholder="Votre adresse e-mail" required>
+        <input formControlName="email" id="email" type="email" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 border-gray-300 focus:ring-indigo-600 focus:outline-none" required />
+        <div *ngIf="hasError('email', 'required')" class="text-red-500 text-sm mt-1">L'adresse e-mail est requise.</div>
+        <div *ngIf="hasError('email', 'email')" class="text-red-500 text-sm mt-1">Format d’e-mail invalide.</div>
       </div>
 
-      <!-- Champ Mot de passe -->
+      <!-- Mot de passe -->
       <div class="mb-4">
         <label for="password" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-2">Mot de passe</label>
-        <input type="password" id="password" class="w-full px-3 py-2 border rounded-md border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:bg-gray-700 dark:text-white dark:focus:ring-indigo-400" placeholder="Votre mot de passe" required>
+        <input formControlName="password" id="password" type="password" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 border-gray-300 focus:ring-indigo-600 focus:outline-none" required />
+        <div *ngIf="hasError('password', 'required')" class="text-red-500 text-sm mt-1">Le mot de passe est requis.</div>
+        <div *ngIf="hasError('password', 'minlength')" class="text-red-500 text-sm mt-1">Minimum 6 caractères.</div>
       </div>
 
-      <!-- Champ Confirmation du mot de passe -->
+      <!-- Confirmation -->
       <div class="mb-6">
         <label for="password_confirmation" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-2">Confirmer le mot de passe</label>
-        <input type="password" id="password_confirmation" class="w-full px-3 py-2 border rounded-md border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:bg-gray-700 dark:text-white dark:focus:ring-indigo-400" placeholder="Confirmer votre mot de passe" required>
+        <input formControlName="password_confirmation" id="password_confirmation" type="password" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 border-gray-300 focus:ring-indigo-600 focus:outline-none" required />
+        <div *ngIf="error === 'Les mots de passe ne correspondent pas.'" class="text-red-500 text-sm mt-1">{{ error }}</div>
       </div>
 
-      <!-- Bouton S'inscrire -->
-      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-700 dark:hover:bg-indigo-600 dark:focus:ring-indigo-500">
-        S'inscrire
-      </button>
+      <!-- Erreur -->
+      <div *ngIf="error && error !== 'Les mots de passe ne correspondent pas.'" class="text-red-500 text-sm mb-4">{{ error }}</div>
+
+      <!-- Succès -->
+      <div *ngIf="success" class="text-green-600 text-sm mb-4 text-center font-semibold">
+        Inscription réussie ! Redirection vers la connexion dans {{ countdown }} seconde{{ countdown > 1 ? 's' : '' }}…
+      </div>
+
+      <!-- Bouton -->
+      <button
+      [type]="isLoading ? 'button' : 'submit'"
+      [disabled]="isLoading || registerForm.invalid"
+      [ngClass]="{
+        'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600': !registerForm.invalid && !isLoading,
+        'bg-gray-400 text-white cursor-not-allowed': registerForm.invalid || isLoading
+      }"
+      class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-6 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+    >
+      <ng-container *ngIf="isLoading; else text"> 
+        <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        Processing…
+      </ng-container>
+      <ng-template #text>S'inscrire</ng-template>
+    </button>
+    
     </form>
 
-    <!-- Lien vers la page de connexion -->
     <p class="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
-      Déjà un compte ? <a href="/login" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
-        Connectez-vous
-      </a>
+      Déjà un compte ?
+      <a routerLink="/login" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">Connectez-vous</a>
     </p>
   </div>
 </div>
-
-<script>
-  // Fonction pour ajuster le mode jour/sombre en fonction de l'heure
-  function updateMode() {
-    const now = new Date();
-    const hours = now.getHours();
-
-    if (hours >= 6 && hours < 18) {
-      // Mode jour (entre 6h et 18h)
-      document.documentElement.classList.remove('dark');  // Enlève le mode sombre
-    } else {
-      // Mode sombre (entre 18h et 6h)
-      document.documentElement.classList.add('dark');  // Ajoute le mode sombre
-    }
-  }
-
-  // Appel de la fonction pour ajuster le mode au chargement de la page
-  updateMode();
-</script>

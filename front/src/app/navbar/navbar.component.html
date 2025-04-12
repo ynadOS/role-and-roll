@@ -2,70 +2,92 @@
   <header class="bg-white dark:bg-gray-900 shadow-md py-6">
     <div class="container mx-auto flex items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="flex items-center space-x-2">
-        <img src="images/logo.png" alt="Logo site" class="h-12 dark:hidden" />
-        <img src="images/logo-dark.png" alt="Logo site" class="h-12 hidden dark:block" />
+      <a routerLink="/" class="flex items-center space-x-2">
+        <img src="/images/logo.png" alt="Logo site" class="h-12 dark:hidden" />
+        <img src="/images/logo-dark.png" alt="Logo site" class="h-12 hidden dark:block" />
         <span class="text-2xl font-bold text-gray-900 dark:text-white">
           <span class="text-indigo-500">Role</span> & Roll
         </span>
       </a>
 
-      <!-- Liens de navigation + bouton darkmode -->
+      <!-- Liens de navigation + bouton dark mode -->
       <div class="flex items-center space-x-6">
         <nav>
           <ul class="flex space-x-6">
-            <li><a routerLink="/" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Accueil</a></li>
-            <li><a routerLink="/campaigns" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a></li>
-            <li><a routerLink="/characters" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Personnages</a></li>
-            <li><a routerLink="/tools" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Outils</a></li>
-            <li><a routerLink="/register" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Inscription</a></li>
-            <li><a routerLink="/login" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Connexion</a></li>
+            <li>
+              <a routerLink="/" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Accueil</a>
+            </li>
+
+            <!-- Si connecté -->
+            <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
+              <li>
+                <a routerLink="/campaigns" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a>
+              </li>
+              <li>
+                <a routerLink="/characters" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Personnages</a>
+              </li>
+              <li>
+                <a routerLink="/tools" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Outils</a>
+              </li>
+              <li>
+                <button (click)="authService.logout()" class="text-red-500 hover:text-red-700">Déconnexion</button>
+              </li>
+            </ng-container>
+
+            <!-- Si NON connecté -->
+            <ng-template #guestLinks>
+              <li>
+                <a routerLink="/register" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Inscription</a>
+              </li>
+              <li>
+                <a routerLink="/login" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Connexion</a>
+              </li>
+            </ng-template>
           </ul>
         </nav>
 
-<button
-  (click)="toggleDarkMode()"
-  class="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 transition relative group overflow-hidden"
-  aria-label="Toggle dark mode"
->
-  <div class="relative h-6 w-6">
-    <!-- Soleil (inline SVG avec morphing + couleur jaune) -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      class="absolute inset-0 h-6 w-6 text-yellow-500 transition-all duration-500 ease-in-out"
-      [ngClass]="{ 'opacity-100 scale-100 rotate-0': !isDarkMode, 'opacity-0 scale-90 rotate-45': isDarkMode }"
-      fill="currentColor"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <circle cx="12" cy="12" r="4" />
-      <line x1="12" y1="1" x2="12" y2="3" />
-      <line x1="12" y1="21" x2="12" y2="23" />
-      <line x1="1" y1="12" x2="3" y2="12" />
-      <line x1="21" y1="12" x2="23" y2="12" />
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-    </svg>
+        <!-- Bouton dark mode -->
+        <button
+          (click)="toggleDarkMode()"
+          class="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 transition relative group overflow-hidden"
+          aria-label="Toggle dark mode"
+        >
+          <div class="relative h-6 w-6">
+            <!-- Soleil -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="absolute inset-0 h-6 w-6 text-yellow-500 transition-all duration-500 ease-in-out"
+              [ngClass]="{ 'opacity-100 scale-100 rotate-0': !isDarkMode, 'opacity-0 scale-90 rotate-45': isDarkMode }"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
 
-    <!-- Lune -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="absolute inset-0 h-6 w-6 text-gray-200 dark:text-white transition-all duration-500 ease-in-out"
-      [ngClass]="{ 'opacity-0 scale-90 -rotate-45': !isDarkMode, 'opacity-100 scale-100 rotate-0': isDarkMode }"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-    </svg>
-  </div>
-</button>
-
-
+            <!-- Lune -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="absolute inset-0 h-6 w-6 text-gray-200 dark:text-white transition-all duration-500 ease-in-out"
+              [ngClass]="{ 'opacity-0 scale-90 -rotate-45': !isDarkMode, 'opacity-100 scale-100 rotate-0': isDarkMode }"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+          </div>
+        </button>
       </div>
     </div>
   </header>

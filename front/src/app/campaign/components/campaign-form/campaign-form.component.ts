@@ -1,24 +1,80 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { StatusService } from '../../../services/status.service';
+import { Campaign, CampaignService } from '../../../services/campaigns.service';
+
+interface Status {
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: 'app-campaign-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './campaign-form.component.html',
   styleUrls: ['./campaign-form.component.css'],
+  imports: [FormsModule, CommonModule]
 })
 export class CampaignFormComponent implements OnInit {
-  statuses: any[] = [];
-  selectedStatusId: string = '';
+  title = '';
+  description = '';
+  selectedUniverseId: number | null = null;
+  selectedStatusId: number | null = null;
+  statuses: Status[] = [];
 
-  constructor(private statusService: StatusService) {}
+  isSubmitting = false;
+  error = '';
+  success = false;
+
+  constructor(
+    private campaignService: CampaignService,
+    private authService: AuthService,
+    private statusService: StatusService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.statusService.getStatuses().subscribe((data) => {
-      this.statuses = data;
+    this.statusService.getStatuses().subscribe({
+      next: (data: Status[]) => {
+        this.statuses = data;
+      },
+      error: (err) => {
+        console.error('Erreur chargement des statuts :', err);
+      }
     });
+  }
+
+  onSubmit(): void {
+    const userId = this.authService.getUserId();
+    if (!userId) {
+      this.error = 'Utilisateur non authentifié.';
+      return;
+    }
+    
+    const campaign: Campaign = {
+      title: this.title,
+      description: this.description,
+      userId,
+      statusId: this.selectedStatusId!,
+      universeId: this.selectedUniverseId || null
+    };
+    
+    this.isSubmitting = true;
+    this.campaignService.createCampaign(campaign).subscribe({
+      next: () => {
+        this.success = true;
+        this.router.navigate(['/campaigns']);
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Erreur lors de la création de la campagne.';
+        this.isSubmitting = false;
+      }
+    });
+    
   }
 }

@@ -26,6 +26,11 @@ public class Campaign {
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
 
+    @ManyToOne
+    @JoinColumn(name = "universe_id")
+    private Universe universe;
+
+
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Session> sessions;
 
@@ -41,13 +46,14 @@ public class Campaign {
     // Constructors
     public Campaign() {}
 
-    public Campaign(Long id, String title, String description, User user, Status status,
+    public Campaign(Long id, String title, String description, User user, Status status, Universe universe,
                     ZonedDateTime createdAt, ZonedDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.user = user;
         this.status = status;
+        this.universe = universe;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -102,6 +108,14 @@ public class Campaign {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Universe getUniverse() {
+        return universe;
+    }
+
+    public void setUniverse(Universe universe) {
+        this.universe = universe;
     }
 
     public List<Session> getSessions() {

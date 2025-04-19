@@ -20,24 +20,8 @@
 
             <!-- Si connecté -->
             <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
-              <li class="relative">
-                <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 text-gray-700 dark:text-gray-300 hover:text-indigo-500 md:hover:text-indigo-500 md:p-0 md:w-auto">
-                  Campagnes
-                  <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                  </svg>
-                </button>
-                <!-- Flowbite Dropdown Menu -->
-                <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
-                  <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownNavbarLink">
-                    <li>
-                      <a routerLink="/campaigns/create" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">✏️ Créer</a>
-                    </li>
-                    <li>
-                      <a routerLink="/campaigns/view" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">📋 Consulter</a>
-                    </li>
-                  </ul>
-                </div>
+              <li>
+                <a routerLink="/campaigns/view" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a>
               </li>
               <li>
                 <a routerLink="/characters" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Personnages</a>

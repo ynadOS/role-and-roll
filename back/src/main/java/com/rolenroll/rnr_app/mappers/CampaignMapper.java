@@ -13,6 +13,7 @@ public class CampaignMapper {
                 campaign.getTitle(),
                 campaign.getDescription(),
                 campaign.getUser().getId(),
+                campaign.getUser().getName(),
                 campaign.getStatus().getId(),
                 campaign.getStatus().getName(),
                 campaign.getUniverse() != null ? campaign.getUniverse().getId() : null,

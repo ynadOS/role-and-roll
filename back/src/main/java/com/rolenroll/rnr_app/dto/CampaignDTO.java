@@ -5,6 +5,7 @@ public record CampaignDTO(
         String title,
         String description,
         Long userId,
+        String userName,
         Long statusId,
         String statusName,
         Long universeId,

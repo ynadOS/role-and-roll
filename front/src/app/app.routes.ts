@@ -4,22 +4,27 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { RegisterComponent } from './auth/components/register/register.component';
 import { CampaignFormComponent } from './campaign/components/campaign-form/campaign-form.component';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
-import { AuthGuard } from './guards/auth.guard'; // ✅ importe le guard
+import { AuthGuard } from './guards/auth.guard';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
-      { path: '', component: HomeComponent },
-      {
-        path: 'campaigns',
-        component: CampaignFormComponent,
-        canActivate: [AuthGuard] // ✅ protégé
-      },
-      // Tu peux ajouter d'autres routes privées ici
+      { path: '', component: HomeComponent } // ✅ Home avec layout public
     ]
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },     // ✅ Sans layout
+  { path: 'register', component: RegisterComponent }, // ✅ Sans layout
+
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'campaigns', component: CampaignFormComponent }
+      // 🔒 autres routes privées ici
+    ]
+  }
 ];

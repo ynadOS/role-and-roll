@@ -34,3 +34,5 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/JwtFilter.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/JwtService.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/services/CampaignService.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/util/PasswordGeneratorRunner.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/util/PasswordHasher.java

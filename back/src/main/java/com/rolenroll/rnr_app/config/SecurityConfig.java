@@ -1,6 +1,7 @@
 package com.rolenroll.rnr_app.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import com.rolenroll.rnr_app.security.CustomUserDetailsService;
 import com.rolenroll.rnr_app.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,7 +39,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/statuses/**").permitAll()
                         .requestMatchers("/api/campaigns/**").permitAll() // TEMPORAIRE pour debug
-
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/api-docs/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -69,4 +76,10 @@ public class SecurityConfig {
 
         return new CorsFilter(source);
     }
+
+    @Bean
+    public UserDetailsService userDetailsService(CustomUserDetailsService customService) {
+        return customService;
+    }
+
 }

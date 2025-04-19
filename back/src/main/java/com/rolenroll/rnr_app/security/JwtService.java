@@ -57,4 +57,15 @@ public class JwtService {
                 .getExpiration();
         return expiration.before(new Date());
     }
+
+    public Long extractUserId(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("userId", Long.class);
+    }
+
 }

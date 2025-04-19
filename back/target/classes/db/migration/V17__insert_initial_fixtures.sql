@@ -1,6 +1,6 @@
 -- 1. Utilisateur
 INSERT INTO users (id, name, email, password, created_at, updated_at)
-VALUES (1, 'Sodany', 'sodany@mail.com', 'string', NOW(), NOW());
+VALUES (1, 'admin', 'admin@mail.com', '$2a$10$T4A3mDby/kLSY38AWxhtpeR.VWuZE7L87TnT8lYzzcBFQzuu1Jffa', NOW(), NOW());
 
 -- 2. Statut (si pas encore existant)
 -- INSERT INTO statuses (id, name) VALUES (1, 'En cours');

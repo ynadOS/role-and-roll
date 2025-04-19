@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 export interface AuthRequest {
   username: string;
@@ -22,6 +24,7 @@ export interface AuthResponse {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
+  private platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}
 
@@ -34,15 +37,22 @@ export class AuthService {
   }
 
   saveToken(token: string) {
-    localStorage.setItem('token', token);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('token', token);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   logout() {
-    localStorage.removeItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+    }
   }
 
   isLoggedIn(): boolean {
@@ -52,13 +62,12 @@ export class AuthService {
   getUserId(): number | null {
     const token = this.getToken();
     if (!token) return null;
-  
+
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.userId || null; // 👈 si tu stockes userId dans le JWT
+      return payload.userId || null;
     } catch (e) {
       return null;
     }
   }
-  
 }

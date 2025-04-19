@@ -28,7 +28,7 @@ export class CampaignFormComponent implements OnInit {
 
   isSubmitting = false;
   error = '';
-  success = false;
+  creationSuccess = false;
 
   constructor(
     private campaignService: CampaignService,
@@ -66,8 +66,8 @@ export class CampaignFormComponent implements OnInit {
     this.isSubmitting = true;
     this.campaignService.createCampaign(campaign).subscribe({
       next: () => {
-        this.success = true;
-        this.router.navigate(['/campaigns']);
+        this.creationSuccess = true;
+        setTimeout(() => this.router.navigate(['/']), 1500);
       },
       error: (err) => {
         console.error(err);

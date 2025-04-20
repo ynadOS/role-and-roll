@@ -6,6 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { StatusService } from '../../../services/status.service';
 import { Campaign, CampaignService } from '../../../services/campaigns.service';
+import { UniversesService } from '../../../services/universes.service';
+
+interface Universe {
+  id: number;
+  name: string;
+  description: string;
+}
 
 interface Status {
   id: number;
@@ -25,6 +32,7 @@ export class CampaignFormComponent implements OnInit {
   selectedUniverseId: number | null = null;
   selectedStatusId: number | null = null;
   statuses: Status[] = [];
+  universes: Universe[] = [];
 
   isSubmitting = false;
   error = '';
@@ -33,6 +41,7 @@ export class CampaignFormComponent implements OnInit {
   constructor(
     private campaignService: CampaignService,
     private authService: AuthService,
+    private universeService: UniversesService,
     private statusService: StatusService,
     private router: Router
   ) {}
@@ -41,9 +50,21 @@ export class CampaignFormComponent implements OnInit {
     this.statusService.getStatuses().subscribe({
       next: (data: Status[]) => {
         this.statuses = data;
+        if (data.length > 0) {
+          this.selectedStatusId = data[0].id;
+        }
       },
       error: (err) => {
         console.error('Erreur chargement des statuts :', err);
+      }
+    });
+    
+    this.universeService.getUniverses().subscribe({
+      next: (data: Universe[]) => {
+        this.universes = data;
+      },
+      error: (err) => {
+        console.error('Erreur chargement des universes :', err);
       }
     });
   }

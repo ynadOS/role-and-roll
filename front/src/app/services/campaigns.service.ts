@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environments';
 
 export interface Campaign {
   title: string;
@@ -14,7 +15,7 @@ export interface Campaign {
   providedIn: 'root'
 })
 export class CampaignService {
-  private apiUrl = 'http://localhost:8080/api/campaigns';
+  private apiUrl = `${environment.apiUrl}/campaigns`;
 
   constructor(private http: HttpClient) {}
 

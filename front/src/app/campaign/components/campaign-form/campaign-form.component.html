@@ -12,7 +12,7 @@
     <form class="space-y-4" (ngSubmit)="onSubmit()" #form="ngForm">
       <!-- Nom de la Campagne -->
       <div>
-        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la Campagne:</label>
+        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la campagne</label>
         <input type="text" id="title" name="title" required [(ngModel)]="title"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400 sm:text-sm"
           placeholder="Entrez le nom de la campagne">
@@ -20,30 +20,29 @@
 
       <!-- Description -->
       <div>
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description:</label>
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
         <textarea id="description" name="description" required [(ngModel)]="description" rows="3"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400"
           placeholder="Entrez une description"></textarea>
       </div>
 
       <!-- Univers (désactivé pour le moment) -->
-      <!--
+
       <div>
-        <label for="universe" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Univers:</label>
+        <label for="universe" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Univers</label>
         <select id="universe" name="universe" [(ngModel)]="selectedUniverseId"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
           <option value="">Sélectionnez un univers</option>
           <option *ngFor="let universe of universes" [value]="universe.id">{{ universe.name }}</option>
         </select>
       </div>
-      -->
+
 
       <!-- Statut -->
       <div>
-        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut:</label>
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut</label>
         <select id="status" name="status" required [(ngModel)]="selectedStatusId"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
-          <option value="">Sélectionnez un statut</option>
           <option *ngFor="let status of statuses" [value]="status.id">{{ status.name }}</option>
         </select>
       </div>

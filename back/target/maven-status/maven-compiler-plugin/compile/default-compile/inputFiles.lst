@@ -4,7 +4,9 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/CampaignController.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/HelloWorldController.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/StatusController.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/controllers/UniverseController.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/CampaignDTO.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/UniverseDTO.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/UserDTO.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/auth/AuthRequestDTO.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/dto/auth/AuthResponseDTO.java
@@ -25,6 +27,7 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/Universe.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/entities/User.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/mappers/CampaignMapper.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/mappers/UniverseMapper.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/mappers/UserMapper.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/repositories/CampaignRepository.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/repositories/StatusRepository.java
@@ -34,5 +37,6 @@
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/JwtFilter.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/security/JwtService.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/services/CampaignService.java
+/Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/services/UniverseService.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/util/PasswordGeneratorRunner.java
 /Users/sodany/Desktop/CDA/RoleNRoll/back/src/main/java/com/rolenroll/rnr_app/util/PasswordHasher.java

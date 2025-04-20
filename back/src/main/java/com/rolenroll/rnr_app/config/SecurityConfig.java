@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/statuses/**").permitAll()
                         .requestMatchers("/api/campaigns/**").permitAll() // TEMPORAIRE pour debug
+                        .requestMatchers("/api/universes/**").permitAll() // TEMPORAIRE pour debug
                         .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",

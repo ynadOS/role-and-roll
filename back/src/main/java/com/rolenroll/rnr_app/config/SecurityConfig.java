@@ -36,10 +36,9 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/**").authenticated()
                         .requestMatchers("/api/statuses/**").permitAll()
-                        .requestMatchers("/api/campaigns/**").permitAll() // TEMPORAIRE pour debug
-                        .requestMatchers("/api/universes/**").permitAll() // TEMPORAIRE pour debug
                         .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",

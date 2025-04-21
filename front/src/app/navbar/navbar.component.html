@@ -20,8 +20,20 @@
 
             <!-- Si connecté -->
             <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
-              <li>
-                <a routerLink="/campaigns" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a>
+              <li class="relative group">
+                <a class="text-gray-700 dark:text-gray-300 hover:text-indigo-500 cursor-pointer">
+                  Campagnes
+                </a>
+                <ul
+                  class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200 z-10"
+                >
+                  <li>
+                    <a routerLink="/campaigns/create" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Créer</a>
+                  </li>
+                  <li>
+                    <a routerLink="/campaigns/overview" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Mes campagnes</a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a routerLink="/characters" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Personnages</a>
@@ -91,4 +103,5 @@
       </div>
     </div>
   </header>
+  
 </nav>

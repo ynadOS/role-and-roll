@@ -6,6 +6,7 @@ import { CampaignFormComponent } from './campaign/components/campaign-form/campa
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
+import { CampaignOverviewComponent } from './campaign/components/campaign-overview/campaign-overview.component';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,9 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'campaigns', component: CampaignFormComponent }
+      { path: 'campaigns', component: CampaignFormComponent },
+      { path: 'campaigns/create', component: CampaignFormComponent },
+      { path: 'campaigns/overview', component: CampaignOverviewComponent},
       // 🔒 autres routes privées ici
     ]
   }

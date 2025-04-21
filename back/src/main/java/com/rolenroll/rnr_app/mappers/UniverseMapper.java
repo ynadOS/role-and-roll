@@ -12,7 +12,8 @@ public class UniverseMapper {
         return new UniverseDTO(
             universe.getId(),
             universe.getName(),
-            universe.getDescription()
+            universe.getDescription(),
+            universe.getRules()
         );
     }
 
@@ -24,6 +25,7 @@ public class UniverseMapper {
         universe.setId(dto.id()); // Only set ID if needed
         universe.setName(dto.name());
         universe.setDescription(dto.description());
+        universe.setRules((dto.rules()));
         return universe;
     }
 }

@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "session")
-public class Session {
+@Table(name = "sessions")
+public class Session extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +16,8 @@ public class Session {
     @Column(columnDefinition = "TEXT")
     private String summary;
 
-    @ManyToOne
-    @JoinColumn(name = "campaign_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "campaign_id", nullable = false)
     private Campaign campaign;
 
     // Constructors

@@ -1,7 +1,6 @@
 package com.rolenroll.rnr_app.entities;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -18,6 +17,9 @@ public class Universe {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String rules;
+
     @OneToMany(mappedBy = "universe")
     private List<CharacterClass> classes;
 
@@ -27,14 +29,14 @@ public class Universe {
     // Constructors
     public Universe() {}
 
-    public Universe(Long id, String name, String description) {
+    public Universe(Long id, String name, String description, String rules) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.rules = rules;
     }
 
     // Getters & Setters
-
     public Long getId() {
         return id;
     }
@@ -57,5 +59,29 @@ public class Universe {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public List<CharacterClass> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<CharacterClass> classes) {
+        this.classes = classes;
+    }
+
+    public List<Race> getRaces() {
+        return races;
+    }
+
+    public void setRaces(List<Race> races) {
+        this.races = races;
     }
 }

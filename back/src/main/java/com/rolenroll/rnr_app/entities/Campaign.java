@@ -1,12 +1,11 @@
 package com.rolenroll.rnr_app.entities;
 
 import jakarta.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "campaigns")
-public class Campaign {
+public class Campaign extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,42 +29,23 @@ public class Campaign {
     @JoinColumn(name = "universe_id")
     private Universe universe;
 
-
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Session> sessions;
 
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private ZonedDateTime updatedAt;
-
     // Constructors
+
     public Campaign() {}
 
-    public Campaign(Long id, String title, String description, User user, Status status, Universe universe,
-                    ZonedDateTime createdAt, ZonedDateTime updatedAt) {
+    public Campaign(Long id, String title, String description, User user, Status status, Universe universe) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.user = user;
         this.status = status;
         this.universe = universe;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = this.updatedAt = ZonedDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = ZonedDateTime.now();
     }
 
     // Getters & Setters
@@ -132,21 +112,5 @@ public class Campaign {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

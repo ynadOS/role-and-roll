@@ -2,6 +2,7 @@ com/rolenroll/rnr_app/repositories/UniverseRepository.class
 com/rolenroll/rnr_app/entities/Location.class
 com/rolenroll/rnr_app/entities/User.class
 com/rolenroll/rnr_app/repositories/UserRepository.class
+com/rolenroll/rnr_app/services/UserService.class
 com/rolenroll/rnr_app/dto/auth/AuthResponseDTO.class
 com/rolenroll/rnr_app/entities/Note.class
 com/rolenroll/rnr_app/entities/File.class

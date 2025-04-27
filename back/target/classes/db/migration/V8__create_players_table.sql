@@ -1,7 +1,7 @@
 -- Table principale des joueurs
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
-    pseudo VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
 
     user_id INTEGER,
     campaign_id INTEGER NOT NULL,

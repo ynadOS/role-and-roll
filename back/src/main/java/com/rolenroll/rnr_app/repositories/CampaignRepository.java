@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     List<Campaign> findByUser(User user);
+    List<Campaign> findByUserId(Long userId);
 }

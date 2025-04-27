@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/api/campaigns")
@@ -69,5 +70,12 @@ public class CampaignController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         campaignService.deleteCampaign(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get campaigns of the current user", description = "Returns all campaigns created by the authenticated user")
+    @ApiResponse(responseCode = "200", description = "List of campaigns returned successfully")
+    @GetMapping("/me")
+    public List<CampaignDTO> getMyCampaigns() {
+        return campaignService.getCampaignsByCurrentUser();
     }
 }

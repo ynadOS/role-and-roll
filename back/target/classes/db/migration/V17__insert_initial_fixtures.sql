@@ -32,7 +32,7 @@ VALUES
     (2, 'Seconde campagne pour afficher', 'Une seconde campagne pour jouer.', 1, 1, NOW(), NOW(), 1, 1);
 
 -- 7. Player
-INSERT INTO players (id, pseudo, user_id, campaign_id, race_id, class_id, created_at, updated_at, created_by, updated_by)
+INSERT INTO players (id, name, user_id, campaign_id, race_id, class_id, created_at, updated_at, created_by, updated_by)
 VALUES
 (1, 'Tapom', 1, 1, 1, 1, NOW(), NOW(), 1, 1),
 (2, 'Pichetanche', 2, 1, 2, 2, NOW(), NOW(), 2, 2),

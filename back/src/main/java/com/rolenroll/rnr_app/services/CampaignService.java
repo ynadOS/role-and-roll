@@ -103,4 +103,11 @@ public class CampaignService {
         }
         campaignRepository.deleteById(id);
     }
+
+    public List<CampaignDTO> getCampaignsByCurrentUser() {
+        User currentUser = userService.getCurrentUser();
+        return campaignRepository.findByUserId(currentUser.getId()).stream()
+                .map(campaignMapper::toDTO)
+                .toList();
+    }
 }

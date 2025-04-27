@@ -38,4 +38,8 @@ export class CampaignService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  getMyCampaigns(): Observable<Campaign[]> {
+    return this.http.get<Campaign[]>(`${this.apiUrl}/me`);
+  }
 }

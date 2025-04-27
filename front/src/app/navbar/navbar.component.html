@@ -19,19 +19,21 @@
             </li>
 
             <!-- Si connecté -->
+             
             <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
               <li class="relative group">
-                <a class="text-gray-700 dark:text-gray-300 hover:text-indigo-500 cursor-pointer">
+                <button type="button" class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-indigo-500 focus:outline-none cursor-pointer">
                   Campagnes
-                </a>
-                <ul
-                  class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200 z-10"
-                >
+                  <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+                <ul class="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md pt-2 pb-2 rounded w-48 z-50">
                   <li>
-                    <a routerLink="/campaigns/create" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Créer</a>
+                    <a routerLink="/campaigns/overview" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Voir les campagnes</a>
                   </li>
                   <li>
-                    <a routerLink="/campaigns/overview" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Mes campagnes</a>
+                    <a routerLink="/campaigns/create" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Créer une campagne</a>
                   </li>
                 </ul>
               </li>
@@ -61,7 +63,11 @@
         <!-- Bouton dark mode -->
         <button
           (click)="toggleDarkMode()"
-          class="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 transition relative group overflow-hidden"
+          [class]="'p-2 rounded-full border transition relative group overflow-hidden ' + (isDarkMode ? 'border-gray-600' : 'border-gray-300')"
+          [ngClass]="{
+            'bg-indigo-800 hover:bg-indigo-900': !isDarkMode,
+            'bg-gray-700 hover:bg-gray-600': isDarkMode
+          }"
           aria-label="Toggle dark mode"
         >
           <div class="relative h-6 w-6">
@@ -70,7 +76,7 @@
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               class="absolute inset-0 h-6 w-6 text-yellow-500 transition-all duration-500 ease-in-out"
-              [ngClass]="{ 'opacity-100 scale-100 rotate-0': !isDarkMode, 'opacity-0 scale-90 rotate-45': isDarkMode }"
+              [ngClass]="{ 'opacity-100 scale-100 rotate-0': isDarkMode, 'opacity-0 scale-90 rotate-45': !isDarkMode }"
               fill="currentColor"
               stroke="currentColor"
               stroke-width="1.5"
@@ -91,8 +97,8 @@
             <!-- Lune -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="absolute inset-0 h-6 w-6 text-gray-200 dark:text-white transition-all duration-500 ease-in-out"
-              [ngClass]="{ 'opacity-0 scale-90 -rotate-45': !isDarkMode, 'opacity-100 scale-100 rotate-0': isDarkMode }"
+              class="absolute inset-0 h-6 w-6 text-yellow-500 transition-all duration-500 ease-in-out"
+              [ngClass]="{ 'opacity-0 scale-90 -rotate-45': isDarkMode, 'opacity-100 scale-100 rotate-0': !isDarkMode }"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -103,5 +109,4 @@
       </div>
     </div>
   </header>
-  
 </nav>

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -26,7 +27,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(data: AuthRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
@@ -70,4 +71,9 @@ export class AuthService {
       return null;
     }
   }
+  forceLogout() {
+    this.logout();
+    this.router.navigate(['/login']);
+  }
+
 }

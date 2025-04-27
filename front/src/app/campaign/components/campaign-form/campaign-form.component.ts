@@ -88,7 +88,7 @@ export class CampaignFormComponent implements OnInit {
     this.campaignService.createCampaign(campaign).subscribe({
       next: () => {
         this.creationSuccess = true;
-        setTimeout(() => this.router.navigate(['/']), 1500);
+        setTimeout(() => this.router.navigate(['/campaigns/overview']), 500);
       },
       error: (err) => {
         console.error(err);

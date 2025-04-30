@@ -1,6 +1,8 @@
 <div class="bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
 <div class="bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Créer une Campagne</h2>
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+      {{ campaign ? 'Modifier la Campagne' : 'Créer une Campagne' }}
+    </h2>
 
     <!-- Formulaire Angular -->
     <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded text-sm text-blue-800 dark:text-blue-200 flex items-start space-x-2">
@@ -52,14 +54,14 @@
         <svg class="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
-        <p>La campagne a été créée avec succès. Redirection...</p>
+        <p>{{ campaign ? 'La campagne a été modifiée avec succès.' : 'La campagne a été créée avec succès. Redirection...' }}</p>
       </div>
 
       <!-- Bouton -->
       <div>
         <button type="submit" [disabled]="!form.form.valid"
           class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-700 dark:hover:bg-indigo-600 dark:focus:ring-indigo-500">
-          Créer
+          {{ campaign ? 'Modifier' : 'Créer' }}
         </button>
       </div>
     </form>

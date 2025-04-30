@@ -53,12 +53,13 @@ public class CampaignController {
     @Operation(summary = "Update campaign", description = "Updates an existing campaign")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Campaign updated successfully"),
+            @ApiResponse(responseCode = "403", description = "Not allowed to update this campaign"),
             @ApiResponse(responseCode = "404", description = "Campaign not found"),
             @ApiResponse(responseCode = "400", description = "Invalid request body")
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<CampaignDTO> update(@PathVariable Long id, @RequestBody CampaignDTO dto) {
-        return ResponseEntity.ok(campaignService.updateCampaign(id, dto));
+    @PatchMapping("/{id}")
+    public ResponseEntity<CampaignDTO> update(@PathVariable Long id, @RequestBody CampaignDTO dto, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return ResponseEntity.ok(campaignService.updateCampaign(id, dto, userDetails));
     }
 
     @Operation(summary = "Delete campaign", description = "Deletes a campaign by its ID")
@@ -67,8 +68,8 @@ public class CampaignController {
             @ApiResponse(responseCode = "404", description = "Campaign not found")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        campaignService.deleteCampaign(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        campaignService.deleteCampaign(id, userDetails);
         return ResponseEntity.noContent().build();
     }
 

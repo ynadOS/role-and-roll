@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environments';
 
 export interface Campaign {
+  id?: number;
   title: string;
   description: string;
   userId: number;
   statusId: number;
-  universeId: number | null;
+  universeId?: number | null;
 }
 
 @Injectable({
@@ -35,11 +36,23 @@ export class CampaignService {
     return this.http.put(`${this.apiUrl}/${id}`, campaign);
   }
 
+  patchCampaign(id: number, updateData: any) {
+    return this.http.patch(`${this.apiUrl}/${id}`, updateData);
+  }
+
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
   getMyCampaigns(): Observable<Campaign[]> {
     return this.http.get<Campaign[]>(`${this.apiUrl}/me`);
+  }
+
+  getStatuses(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/statuses`);
+  }
+
+  getUniverses(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/universes`);
   }
 }

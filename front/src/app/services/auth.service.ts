@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
@@ -26,6 +27,9 @@ export interface AuthResponse {
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
   private platformId = inject(PLATFORM_ID);
+
+  authCheckInProgress = new BehaviorSubject<boolean>(true);
+  currentUser: any = null;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -54,6 +58,7 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
     }
+    this.currentUser = null;
   }
 
   isLoggedIn(): boolean {
@@ -74,6 +79,17 @@ export class AuthService {
   forceLogout() {
     this.logout();
     this.router.navigate(['/login']);
+  }
+
+  getMe(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/me`).pipe(
+      tap((user) => {
+        this.currentUser = user;
+        this.authCheckInProgress.next(false);
+      }, () => {
+        this.authCheckInProgress.next(false);
+      })
+    );
   }
 
 }

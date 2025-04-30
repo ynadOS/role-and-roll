@@ -1,5 +1,6 @@
 # Maven
-back/target/
+target/
+back/target/schema.sql
 
 # IntelliJ
 .idea/

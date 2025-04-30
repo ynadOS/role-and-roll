@@ -21,7 +21,7 @@ export class LoginComponent {
   error: string | null = null;
   success: boolean = false;
   isLoading = false;
-  countdown = 3;
+  countdown = 2;
 
   constructor(
     private fb: FormBuilder,

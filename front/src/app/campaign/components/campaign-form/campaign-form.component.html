@@ -1,12 +1,20 @@
-<div class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Créer une Campagne</h2>
+<div class="bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
+<div class="bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+      {{ campaign ? 'Modifier la Campagne' : 'Créer une Campagne' }}
+    </h2>
 
     <!-- Formulaire Angular -->
+    <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded text-sm text-blue-800 dark:text-blue-200 flex items-start space-x-2">
+      <svg class="w-5 h-5 text-blue-500 dark:text-blue-300 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+      </svg>
+      <p>En créant une campagne, vous en devenez automatiquement le Maître du Jeu.</p>
+    </div>
     <form class="space-y-4" (ngSubmit)="onSubmit()" #form="ngForm">
       <!-- Nom de la Campagne -->
       <div>
-        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la Campagne:</label>
+        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la campagne</label>
         <input type="text" id="title" name="title" required [(ngModel)]="title"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400 sm:text-sm"
           placeholder="Entrez le nom de la campagne">
@@ -14,39 +22,46 @@
 
       <!-- Description -->
       <div>
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description:</label>
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
         <textarea id="description" name="description" required [(ngModel)]="description" rows="3"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400"
           placeholder="Entrez une description"></textarea>
       </div>
 
       <!-- Univers (désactivé pour le moment) -->
-      <!--
+
       <div>
-        <label for="universe" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Univers:</label>
+        <label for="universe" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Univers</label>
         <select id="universe" name="universe" [(ngModel)]="selectedUniverseId"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
           <option value="">Sélectionnez un univers</option>
           <option *ngFor="let universe of universes" [value]="universe.id">{{ universe.name }}</option>
         </select>
       </div>
-      -->
+
 
       <!-- Statut -->
       <div>
-        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut:</label>
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut</label>
         <select id="status" name="status" required [(ngModel)]="selectedStatusId"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
-          <option value="">Sélectionnez un statut</option>
           <option *ngFor="let status of statuses" [value]="status.id">{{ status.name }}</option>
         </select>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="creationSuccess" class="mb-4 p-4 bg-green-100 dark:bg-green-800 border border-green-300 dark:border-green-600 rounded-lg text-sm text-green-900 dark:text-green-200 flex items-start space-x-2">
+        <svg class="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <p>{{ campaign ? 'La campagne a été modifiée avec succès.' : 'La campagne a été créée avec succès. Redirection...' }}</p>
       </div>
 
       <!-- Bouton -->
       <div>
         <button type="submit" [disabled]="!form.form.valid"
           class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-700 dark:hover:bg-indigo-600 dark:focus:ring-indigo-500">
-          Créer
+          {{ campaign ? 'Modifier' : 'Créer' }}
         </button>
       </div>
     </form>

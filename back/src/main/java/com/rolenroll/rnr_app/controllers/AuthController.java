@@ -15,9 +15,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +83,18 @@ public class AuthController {
         String token = authHeader.replace("Bearer ", "");
         Long userId = jwtService.extractUserId(token);
         return ResponseEntity.ok(userId);
+    }
+
+    @GetMapping("/test-auth")
+    public ResponseEntity<?> test(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No auth found");
+        }
+
+        System.out.println("User = " + authentication.getName());
+        System.out.println("Authorities = " + authentication.getAuthorities());
+
+        return ResponseEntity.ok("You are authenticated!");
     }
 
 }

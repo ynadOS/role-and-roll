@@ -9,9 +9,12 @@ import com.rolenroll.rnr_app.mappers.CampaignMapper;
 import com.rolenroll.rnr_app.repositories.CampaignRepository;
 import com.rolenroll.rnr_app.repositories.StatusRepository;
 import com.rolenroll.rnr_app.repositories.UniverseRepository;
-import com.rolenroll.rnr_app.repositories.UserRepository;
+import com.rolenroll.rnr_app.services.UserService;
+import java.time.LocalDateTime;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -20,20 +23,20 @@ public class CampaignService {
 
     private final CampaignRepository campaignRepository;
     private final CampaignMapper campaignMapper;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final StatusRepository statusRepository;
     private final UniverseRepository universeRepository;
 
     public CampaignService(
             CampaignRepository campaignRepository,
             CampaignMapper campaignMapper,
-            UserRepository userRepository,
+            UserService userService,
             StatusRepository statusRepository,
             UniverseRepository universeRepository
     ) {
         this.campaignRepository = campaignRepository;
         this.campaignMapper = campaignMapper;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.statusRepository = statusRepository;
         this.universeRepository = universeRepository;
     }
@@ -45,8 +48,7 @@ public class CampaignService {
     }
 
     public CampaignDTO createCampaign(CampaignDTO dto) {
-        User user = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new EntityNotFoundException("Utilisateur introuvable"));
+        User currentUser = userService.getCurrentUser();
 
         Status status = statusRepository.findById(dto.statusId())
                 .orElseThrow(() -> new EntityNotFoundException("Statut introuvable"));
@@ -54,7 +56,10 @@ public class CampaignService {
         Campaign campaign = new Campaign();
         campaign.setTitle(dto.title());
         campaign.setDescription(dto.description());
-        campaign.setUser(user);
+        campaign.setCreatedBy(currentUser);
+        campaign.setUpdatedBy(currentUser);
+        campaign.setCreatedAt(LocalDateTime.now());
+        campaign.setUpdatedAt(LocalDateTime.now());
         campaign.setStatus(status);
 
         if (dto.universeId() != null) {
@@ -64,6 +69,8 @@ public class CampaignService {
         } else {
             campaign.setUniverse(null);
         }
+
+        campaign.setUser(currentUser);
 
         return campaignMapper.toDTO(campaignRepository.save(campaign));
     }
@@ -75,9 +82,13 @@ public class CampaignService {
                 .orElseThrow(() -> new EntityNotFoundException("Campagne introuvable"));
     }
 
-    public CampaignDTO updateCampaign(Long id, CampaignDTO dto) {
+    public CampaignDTO updateCampaign(Long id, CampaignDTO dto, UserDetails userDetails) {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Campagne introuvable"));
+
+        if (!campaign.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à modifier cette campagne");
+        }
 
         campaign.setTitle(dto.title());
         campaign.setDescription(dto.description());
@@ -85,15 +96,36 @@ public class CampaignService {
         Status status = statusRepository.findById(dto.statusId())
                 .orElseThrow(() -> new EntityNotFoundException("Statut introuvable"));
 
+        if (dto.universeId() != null) {
+            Universe universe = universeRepository.findById(dto.universeId())
+                    .orElseThrow(() -> new EntityNotFoundException("Univers introuvable"));
+            campaign.setUniverse(universe);
+        } else {
+            campaign.setUniverse(null);
+        }
+
         campaign.setStatus(status);
+        campaign.setUpdatedBy(userService.getCurrentUser());
+        campaign.setUpdatedAt(LocalDateTime.now());
 
         return campaignMapper.toDTO(campaignRepository.save(campaign));
     }
 
-    public void deleteCampaign(Long id) {
-        if (!campaignRepository.existsById(id)) {
-            throw new EntityNotFoundException("Campagne introuvable");
+    public void deleteCampaign(Long id, UserDetails userDetails) {
+        Campaign campaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Campagne introuvable"));
+
+        if (!campaign.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à supprimer cette campagne");
         }
+
         campaignRepository.deleteById(id);
+    }
+
+    public List<CampaignDTO> getCampaignsByCurrentUser() {
+        User currentUser = userService.getCurrentUser();
+        return campaignRepository.findByUserId(currentUser.getId()).stream()
+                .map(campaignMapper::toDTO)
+                .toList();
     }
 }

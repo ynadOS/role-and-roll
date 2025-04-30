@@ -14,6 +14,12 @@ public class PasswordGeneratorRunner {
             String rawPassword = "admin";
             String hash = encoder.encode(rawPassword);
             System.out.println(">>> Mot de passe hashé pour 'admin' : " + hash);
+            String rawPasswordPlayer = "player";
+            String hashPlayer = encoder.encode(rawPasswordPlayer);
+            System.out.println(">>> Mot de passe hashé pour 'player' : " + hashPlayer);
+            String rawPasswordPlayer2 = "player2";
+            String hashPlayer2 = encoder.encode(rawPasswordPlayer2);
+            System.out.println(">>> Mot de passe hashé pour 'player2' : " + hashPlayer2);
         };
     }
 }

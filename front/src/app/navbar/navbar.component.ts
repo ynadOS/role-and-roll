@@ -12,6 +12,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class NavbarComponent {
   isDarkMode = false;
+  isMenuOpen = false;
+  showCampaignMenu: boolean = false;
   isBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, public authService: AuthService) {

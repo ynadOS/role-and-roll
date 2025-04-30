@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class JwtService {
     private long jwtExpiration; // en ms
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(User user) {
@@ -44,8 +45,16 @@ public class JwtService {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        String username = extractUsername(token);
+        boolean isValid = (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+        System.out.println("JWT VALIDATION:");
+        System.out.println("- Extracted username = " + username);
+        System.out.println("- UserDetails username = " + userDetails.getUsername());
+        System.out.println("- Token expired = " + isTokenExpired(token));
+        System.out.println("- Valid = " + isValid);
+
+        return isValid;
     }
 
     private boolean isTokenExpired(String token) {

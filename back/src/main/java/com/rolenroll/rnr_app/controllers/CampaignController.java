@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/api/campaigns")
@@ -52,12 +53,13 @@ public class CampaignController {
     @Operation(summary = "Update campaign", description = "Updates an existing campaign")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Campaign updated successfully"),
+            @ApiResponse(responseCode = "403", description = "Not allowed to update this campaign"),
             @ApiResponse(responseCode = "404", description = "Campaign not found"),
             @ApiResponse(responseCode = "400", description = "Invalid request body")
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<CampaignDTO> update(@PathVariable Long id, @RequestBody CampaignDTO dto) {
-        return ResponseEntity.ok(campaignService.updateCampaign(id, dto));
+    @PatchMapping("/{id}")
+    public ResponseEntity<CampaignDTO> update(@PathVariable Long id, @RequestBody CampaignDTO dto, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return ResponseEntity.ok(campaignService.updateCampaign(id, dto, userDetails));
     }
 
     @Operation(summary = "Delete campaign", description = "Deletes a campaign by its ID")
@@ -66,8 +68,15 @@ public class CampaignController {
             @ApiResponse(responseCode = "404", description = "Campaign not found")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        campaignService.deleteCampaign(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        campaignService.deleteCampaign(id, userDetails);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get campaigns of the current user", description = "Returns all campaigns created by the authenticated user")
+    @ApiResponse(responseCode = "200", description = "List of campaigns returned successfully")
+    @GetMapping("/me")
+    public List<CampaignDTO> getMyCampaigns() {
+        return campaignService.getCampaignsByCurrentUser();
     }
 }

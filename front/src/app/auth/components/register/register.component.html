@@ -54,7 +54,7 @@
         'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600': !registerForm.invalid && !isLoading,
         'bg-gray-400 text-white cursor-not-allowed': registerForm.invalid || isLoading
       }"
-      class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-6 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+      class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-6 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
     >
       <ng-container *ngIf="isLoading; else text"> 
         <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "stories")
-public class Story {
+public class Story extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,21 +13,26 @@ public class Story {
     @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "universe_id", nullable = false)
-    private Universe universe;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "campaign_id", nullable = false)
+    private Campaign campaign;
+
+    @Column(name = "is_visible_to_players", nullable = false)
+    private boolean visibleToPlayers = false;
 
     // Constructors
+
     public Story() {}
 
-    public Story(Long id, String title, String content, Universe universe) {
+    public Story(Long id, String title, String content, Campaign campaign, boolean visibleToPlayers) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.universe = universe;
+        this.campaign = campaign;
+        this.visibleToPlayers = visibleToPlayers;
     }
 
     // Getters & Setters
@@ -56,61 +61,19 @@ public class Story {
         this.content = content;
     }
 
-    public Universe getUniverse() {
-        return universe;
+    public Campaign getCampaign() {
+        return campaign;
     }
 
-    public void setUniverse(Universe universe) {
-        this.universe = universe;
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 
-    @Entity
-    @Table(name = "races")
-    public static class Race {
+    public boolean isVisibleToPlayers() {
+        return visibleToPlayers;
+    }
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @Column(nullable = false)
-        private String name;
-
-        @Column(columnDefinition = "TEXT")
-        private String description;
-
-        // Constructors
-        public Race() {}
-
-        public Race(Long id, String name, String description) {
-            this.id = id;
-            this.name = name;
-            this.description = description;
-        }
-
-        // Getters & Setters
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    public void setVisibleToPlayers(boolean visibleToPlayers) {
+        this.visibleToPlayers = visibleToPlayers;
     }
 }

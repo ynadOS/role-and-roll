@@ -104,6 +104,8 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>3.4.4</version> <!-- Utilise la même version que celle de Spring Boot dans ton projet -->
+
 		</dependency>
 
 	</dependencies>

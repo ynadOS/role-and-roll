@@ -4,7 +4,6 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { StatusService } from '../../../services/status.service';
 import { Campaign, CampaignService } from '../../../services/campaigns.service';
 import { UniversesService } from '../../../services/universes.service';
 
@@ -12,11 +11,6 @@ interface Universe {
   id: number;
   name: string;
   description: string;
-}
-
-interface Status {
-  id: number;
-  name: string;
 }
 
 @Component({
@@ -34,8 +28,8 @@ export class CampaignFormComponent implements OnInit {
   title = '';
   description = '';
   selectedUniverseId: number | null = null;
-  selectedStatusId: number | null = null;
-  @Input() statuses: Status[] = [];
+  selectedStatus: string = 'DRAFT';
+  @Input() statuses: { value: string, label: string }[] = [];
   @Input() universes: Universe[] = [];
 
   isSubmitting = false;
@@ -46,16 +40,30 @@ export class CampaignFormComponent implements OnInit {
     private campaignService: CampaignService,
     private authService: AuthService,
     private universeService: UniversesService,
-    private statusService: StatusService,
     private router: Router
   ) {}
-
   ngOnInit(): void {
+    this.universeService.getUniverses().subscribe({
+      next: (data) => {
+        this.universes = data;
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des univers', err);
+      }
+    });
+    this.campaignService.getStatuses().subscribe({
+      next: (data) => {
+        this.statuses = data;
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des statuts', err);
+      }
+    });
     if (this.campaign) {
       this.title = this.campaign.title;
       this.description = this.campaign.description;
-      this.selectedStatusId = this.campaign.statusId;
       this.selectedUniverseId = this.campaign.universeId ?? null;
+      this.selectedStatus = this.campaign.status;
     }
   }
 
@@ -69,7 +77,7 @@ export class CampaignFormComponent implements OnInit {
     const payload: Partial<Campaign> = {
       title: this.title,
       description: this.description,
-      statusId: this.selectedStatusId!,
+      status: this.selectedStatus,
       universeId: this.selectedUniverseId || null
     };
 
@@ -81,7 +89,7 @@ export class CampaignFormComponent implements OnInit {
         next: () => {
           this.creationSuccess = true;
           this.campaignUpdated.emit();
-          setTimeout(() => this.router.navigate(['/campaigns/overview']), 500);
+          window.location.href = '/campaigns/overview';
         },
         error: (err) => {
           console.error(err);

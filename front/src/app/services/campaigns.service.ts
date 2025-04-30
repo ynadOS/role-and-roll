@@ -8,7 +8,8 @@ export interface Campaign {
   title: string;
   description: string;
   userId: number;
-  statusId: number;
+  status: string;
+  statusLabel?: string;
   universeId?: number | null;
 }
 
@@ -49,7 +50,7 @@ export class CampaignService {
   }
 
   getStatuses(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/statuses`);
+    return this.http.get<any[]>(`${this.apiUrl}/statuses`);
   }
 
   getUniverses(): Observable<any[]> {

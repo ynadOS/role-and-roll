@@ -2,8 +2,7 @@ package com.rolenroll.rnr_app.mappers;
 
 import com.rolenroll.rnr_app.dto.InvitationDTO;
 import com.rolenroll.rnr_app.entities.Invitation;
-import com.rolenroll.rnr_app.entities.StatusInvitation;
-import com.rolenroll.rnr_app.entities.User;
+import com.rolenroll.rnr_app.entities.InvitationStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
@@ -23,9 +22,12 @@ public class InvitationMapper {
 
         return new InvitationDTO(
                 invitation.getId(),
-                invitation.getName(),
-                invitation.getStatus() != null ? invitation.getStatus().getId() : null,
-                invitation.getStatus() != null ? invitation.getStatus().getName() : null,
+                invitation.getStatus(),
+                invitation.getStatus().getLabel(),
+                invitation.getUser() != null ? invitation.getUser().getId() : null,
+                invitation.getUser() != null ? invitation.getUser().getName() : null,
+                invitation.getCampaign() != null ? invitation.getCampaign().getId() : null,
+                invitation.getCampaign() != null ? invitation.getCampaign().getTitle() : null,
                 createdAt,
                 updatedAt,
                 invitation.getCreatedBy() != null ? invitation.getCreatedBy().getId() : null,
@@ -38,14 +40,8 @@ public class InvitationMapper {
     public Invitation toEntity(InvitationDTO dto) {
         Invitation invitation = new Invitation();
         invitation.setId(dto.id());
-        invitation.setName(dto.name());
-        // Les relations (status, user) sont à injecter dans le service
-        return invitation;
-    }
-
-    public Invitation toEntityWithStatus(InvitationDTO dto, StatusInvitation status) {
-        Invitation invitation = toEntity(dto);
-        invitation.setStatus(status);
+        invitation.setStatus(dto.status());
+        // Relations user et campaign injectées dans le service
         return invitation;
     }
 }

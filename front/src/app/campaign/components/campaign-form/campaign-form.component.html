@@ -43,9 +43,9 @@
       <!-- Statut -->
       <div>
         <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut</label>
-        <select id="status" name="status" required [(ngModel)]="selectedStatusId"
+        <select id="status" name="status" required [(ngModel)]="selectedStatus"
           class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent dark:focus:ring-indigo-400">
-          <option *ngFor="let status of statuses" [value]="status.id">{{ status.name }}</option>
+          <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
         </select>
       </div>
 

@@ -2,12 +2,10 @@ package com.rolenroll.rnr_app.services;
 
 import com.rolenroll.rnr_app.dto.CampaignDTO;
 import com.rolenroll.rnr_app.entities.Campaign;
-import com.rolenroll.rnr_app.entities.Status;
 import com.rolenroll.rnr_app.entities.Universe;
 import com.rolenroll.rnr_app.entities.User;
 import com.rolenroll.rnr_app.mappers.CampaignMapper;
 import com.rolenroll.rnr_app.repositories.CampaignRepository;
-import com.rolenroll.rnr_app.repositories.StatusRepository;
 import com.rolenroll.rnr_app.repositories.UniverseRepository;
 import com.rolenroll.rnr_app.services.UserService;
 import java.time.LocalDateTime;
@@ -24,20 +22,17 @@ public class CampaignService {
     private final CampaignRepository campaignRepository;
     private final CampaignMapper campaignMapper;
     private final UserService userService;
-    private final StatusRepository statusRepository;
     private final UniverseRepository universeRepository;
 
     public CampaignService(
             CampaignRepository campaignRepository,
             CampaignMapper campaignMapper,
             UserService userService,
-            StatusRepository statusRepository,
             UniverseRepository universeRepository
     ) {
         this.campaignRepository = campaignRepository;
         this.campaignMapper = campaignMapper;
         this.userService = userService;
-        this.statusRepository = statusRepository;
         this.universeRepository = universeRepository;
     }
 
@@ -50,9 +45,6 @@ public class CampaignService {
     public CampaignDTO createCampaign(CampaignDTO dto) {
         User currentUser = userService.getCurrentUser();
 
-        Status status = statusRepository.findById(dto.statusId())
-                .orElseThrow(() -> new EntityNotFoundException("Statut introuvable"));
-
         Campaign campaign = new Campaign();
         campaign.setTitle(dto.title());
         campaign.setDescription(dto.description());
@@ -60,7 +52,7 @@ public class CampaignService {
         campaign.setUpdatedBy(currentUser);
         campaign.setCreatedAt(LocalDateTime.now());
         campaign.setUpdatedAt(LocalDateTime.now());
-        campaign.setStatus(status);
+        campaign.setStatus(dto.status());
 
         if (dto.universeId() != null) {
             Universe universe = universeRepository.findById(dto.universeId())
@@ -93,9 +85,6 @@ public class CampaignService {
         campaign.setTitle(dto.title());
         campaign.setDescription(dto.description());
 
-        Status status = statusRepository.findById(dto.statusId())
-                .orElseThrow(() -> new EntityNotFoundException("Statut introuvable"));
-
         if (dto.universeId() != null) {
             Universe universe = universeRepository.findById(dto.universeId())
                     .orElseThrow(() -> new EntityNotFoundException("Univers introuvable"));
@@ -104,7 +93,7 @@ public class CampaignService {
             campaign.setUniverse(null);
         }
 
-        campaign.setStatus(status);
+        campaign.setStatus(dto.status());
         campaign.setUpdatedBy(userService.getCurrentUser());
         campaign.setUpdatedAt(LocalDateTime.now());
 
@@ -122,8 +111,8 @@ public class CampaignService {
         campaignRepository.deleteById(id);
     }
 
-    public List<CampaignDTO> getCampaignsByCurrentUser() {
-        User currentUser = userService.getCurrentUser();
+    public List<CampaignDTO> getCampaignsByCurrentUser(UserDetails userDetails) {
+        User currentUser = userService.findByEmail(userDetails.getUsername());
         return campaignRepository.findByUserId(currentUser.getId()).stream()
                 .map(campaignMapper::toDTO)
                 .toList();

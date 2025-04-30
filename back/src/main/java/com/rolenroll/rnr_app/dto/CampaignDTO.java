@@ -1,5 +1,6 @@
 package com.rolenroll.rnr_app.dto;
 
+import com.rolenroll.rnr_app.entities.CampaignStatus;
 import java.time.ZonedDateTime;
 
 public record CampaignDTO(
@@ -8,8 +9,8 @@ public record CampaignDTO(
         String description,
         Long userId,
         String userName,
-        Long statusId,
-        String statusName,
+        CampaignStatus status,
+        String statusLabel,
         Long universeId,
         String universeName,
         ZonedDateTime createdAt,

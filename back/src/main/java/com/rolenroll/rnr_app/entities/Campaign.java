@@ -21,9 +21,9 @@ public class Campaign extends AuditableEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "status_id", nullable = false)
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CampaignStatus status;
 
     @ManyToOne
     @JoinColumn(name = "universe_id")
@@ -39,7 +39,7 @@ public class Campaign extends AuditableEntity {
 
     public Campaign() {}
 
-    public Campaign(Long id, String title, String description, User user, Status status, Universe universe) {
+    public Campaign(Long id, String title, String description, User user, CampaignStatus status, Universe universe) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -82,11 +82,11 @@ public class Campaign extends AuditableEntity {
         this.user = user;
     }
 
-    public Status getStatus() {
+    public CampaignStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(CampaignStatus status) {
         this.status = status;
     }
 

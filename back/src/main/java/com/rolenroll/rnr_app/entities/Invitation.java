@@ -10,19 +10,26 @@ public class Invitation extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private InvitationStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "status_id")
-    private StatusInvitation status;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "campaign_id", nullable = false)
+    private Campaign campaign;
 
     public Invitation() {
     }
 
-    public Invitation(Long id, String name, StatusInvitation status) {
+    public Invitation(Long id, InvitationStatus status, User user, Campaign campaign) {
         this.id = id;
-        this.name = name;
         this.status = status;
+        this.user = user;
+        this.campaign = campaign;
     }
 
     // Getters & Setters
@@ -35,19 +42,27 @@ public class Invitation extends AuditableEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public StatusInvitation getStatus() {
+    public InvitationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusInvitation status) {
+    public void setStatus(InvitationStatus status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 }

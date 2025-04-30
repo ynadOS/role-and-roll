@@ -1,6 +1,7 @@
 package com.rolenroll.rnr_app.controllers;
 
 import com.rolenroll.rnr_app.dto.CampaignDTO;
+import com.rolenroll.rnr_app.entities.CampaignStatus;
 import com.rolenroll.rnr_app.services.CampaignService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Arrays;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
@@ -76,7 +79,19 @@ public class CampaignController {
     @Operation(summary = "Get campaigns of the current user", description = "Returns all campaigns created by the authenticated user")
     @ApiResponse(responseCode = "200", description = "List of campaigns returned successfully")
     @GetMapping("/me")
-    public List<CampaignDTO> getMyCampaigns() {
-        return campaignService.getCampaignsByCurrentUser();
+    public List<CampaignDTO> getMyCampaigns(@AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return campaignService.getCampaignsByCurrentUser(userDetails);
     }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<List<Map<String, String>>> getCampaignStatuses() {
+        List<Map<String, String>> statuses = Arrays.stream(CampaignStatus.values())
+                .map(status -> Map.of(
+                        "value", status.name(),
+                        "label", status.getLabel()
+                ))
+                .toList();
+        return ResponseEntity.ok(statuses);
+    }
+
 }

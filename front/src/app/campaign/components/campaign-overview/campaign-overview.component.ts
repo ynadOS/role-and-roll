@@ -17,7 +17,7 @@ import { ModalComponent } from '../../../shared/components/modal/modal/modal.com
 })
 export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
   campaigns: any[] = [];
-  statuses: any[] = [];
+  statuses: { value: string, label: string }[] = [];
   universes: any[] = [];
   
 
@@ -41,21 +41,21 @@ export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
       }
     });
 
-    this.campaignService.getStatuses().subscribe({
-      next: (data) => {
-        this.statuses = data;
-      },
-      error: (err) => {
-        console.error('Erreur chargement des statuts :', err);
-      }
-    });
-
     this.campaignService.getUniverses().subscribe({
       next: (data) => {
         this.universes = data;
       },
       error: (err) => {
         console.error('Erreur chargement des universes :', err);
+      }
+    });
+
+    this.campaignService.getStatuses().subscribe({
+      next: (data) => {
+        this.statuses = data;
+      },
+      error: (err) => {
+        console.error('Erreur chargement des statuts :', err);
       }
     });
   }

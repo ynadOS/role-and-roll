@@ -26,10 +26,11 @@ VALUES
 (2, 'Mage', 'Classe de combat à distance', 1);
 
 -- 6. Campagne (avec created_by / updated_by)
-INSERT INTO campaigns (id, title, description, user_id, status_id, created_at, updated_at, created_by, updated_by)
+INSERT INTO campaigns (id, title, description, user_id, status, created_at, updated_at, created_by, updated_by)
 VALUES
-    (1, 'World of Warcraft', 'Une première campagne pour jouer.', 1, 1, NOW(), NOW(), 1, 1),
-    (2, 'Seconde campagne pour afficher', 'Une seconde campagne pour jouer.', 1, 1, NOW(), NOW(), 1, 1);
+    (1, 'World of Warcraft', 'Une première campagne pour jouer.', 1, 'DRAFT', NOW(), NOW(), 1, 1),
+    (2, 'Seconde campagne pour afficher', 'Une seconde campagne pour jouer.', 1, 'DRAFT', NOW(), NOW(), 1, 1),
+    (3, 'Sur la trace de ta daronne', 'Tout commence dans le paisible royaume de Micro-Onde, où la légendaire Daronne, grande prêtresse du Tupperware sacré, a mystérieusement disparu après une dispute épique au marché du Lidl. Les rumeurs disent qu’elle s’est réfugiée dans le Temple des Promotions Éternelles, protégée par un dragon insomniaque et un frigo jamais rangé.', 1, 'DRAFT', NOW(), NOW(), 1, 1);
 
 -- 7. Player
 INSERT INTO players (id, name, user_id, campaign_id, race_id, class_id, created_at, updated_at, created_by, updated_by)
@@ -38,12 +39,8 @@ VALUES
 (2, 'Pichetanche', 2, 1, 2, 2, NOW(), NOW(), 2, 2),
 (3, 'Sokha', 3, 1, 1, 1, NOW(), NOW(), 3, 3);
 
--- 8. Statuts d'invitation (tu les gardes bien ici)
-INSERT INTO status_invitation (id, name)
-VALUES
-(1, 'Pending'),
-(2, 'Accepted'),
-(3, 'Refused');
+-- 8. Statuts d'invitation (supprimé - remplacé par enum InvitationStatus côté Java)
+-- plus besoin de cette table
 
 -- 9. Stories liées à la campagne
 INSERT INTO stories (id, title, content, campaign_id, is_visible_to_players, created_at, updated_at, created_by, updated_by)

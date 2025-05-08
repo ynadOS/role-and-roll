@@ -1,6 +1,6 @@
 CREATE TABLE universes (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
     description TEXT,
     rules TEXT,
 
@@ -10,5 +10,6 @@ CREATE TABLE universes (
     updated_by BIGINT,
 
     CONSTRAINT fk_universe_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
-    CONSTRAINT fk_universe_updated_by FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+    CONSTRAINT fk_universe_updated_by FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT unique_universe_name_per_user UNIQUE (name, created_by)
 );

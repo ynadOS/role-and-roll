@@ -1,11 +1,13 @@
 package com.rolenroll.rnr_app.entities;
 
+import com.rolenroll.rnr_app.entities.AuditableEntity;
+
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "universes")
-public class Universe {
+public class Universe extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +31,7 @@ public class Universe {
     // Constructors
     public Universe() {}
 
-    public Universe(Long id, String name, String description, String rules) {
-        this.id = id;
+    public Universe(String name, String description, String rules) {
         this.name = name;
         this.description = description;
         this.rules = rules;

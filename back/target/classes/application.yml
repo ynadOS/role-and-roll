@@ -3,10 +3,14 @@ spring:
     name: rnr-app
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/rnr_app
-    username: sodany
-    password: sodany
+    url: jdbc:postgresql://postgres:5432/rnr_app
+    username: admin
+    password: admin
     driver-class-name: org.postgresql.Driver
+
+  devtools:
+    restart:
+      enabled: true
 
   security:
     filter:
@@ -18,10 +22,10 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     baseline-version: 1
-    url: jdbc:postgresql://localhost:5432/rnr_app
-    user: sodany
-    password: sodany
-
+    url: jdbc:postgresql://postgres:5432/rnr_app
+    user: admin
+    password: admin
+    out-of-order: true
   jpa:
     hibernate:
       ddl-auto: none
@@ -59,4 +63,3 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
-

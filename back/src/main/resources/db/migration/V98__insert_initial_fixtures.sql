@@ -9,9 +9,9 @@ VALUES
 -- INSERT INTO statuses (id, name) VALUES (1, 'En cours'), (2, 'Brouillon'), (3, 'Terminé');
 
 -- 3. Univers
-INSERT INTO universes (id, name, description)
+INSERT INTO universes (id, name, description, rules, created_at, updated_at, created_by, updated_by)
 VALUES
-(1, 'Médiéval fantastique', 'Premier univers de test');
+(1, 'Médiéval fantastique', 'Premier univers de test', 'description de lunivers', NOW(), NOW(), 1, 1);
 
 -- 4. Race
 INSERT INTO races (id, name, description, universe_id)

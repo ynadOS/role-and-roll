@@ -39,8 +39,7 @@ public class Campaign extends AuditableEntity {
 
     public Campaign() {}
 
-    public Campaign(Long id, String title, String description, User user, CampaignStatus status, Universe universe) {
-        this.id = id;
+    public Campaign(String title, String description, User user, CampaignStatus status, Universe universe) {
         this.title = title;
         this.description = description;
         this.user = user;

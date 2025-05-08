@@ -6,6 +6,7 @@ import com.rolenroll.rnr_app.dto.UniverseDTO;
 import com.rolenroll.rnr_app.services.UniverseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
@@ -14,8 +15,11 @@ import java.util.List;
 @RequestMapping("/api/universes")
 public class UniverseController {
 
-    @Autowired
-    private UniverseService universeService;
+    private final UniverseService universeService;
+
+    public UniverseController(UniverseService universeService) {
+        this.universeService = universeService;
+    }
 
     @Operation(summary = "Get all universes")
     @GetMapping
@@ -31,8 +35,8 @@ public class UniverseController {
 
     @Operation(summary = "Create a new universe")
     @PostMapping
-    public UniverseDTO createUniverse(@RequestBody UniverseDTO universeDTO) {
-        return universeService.createUniverse(universeDTO);
+    public UniverseDTO createUniverse(@RequestBody UniverseDTO universeDTO, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return universeService.createUniverse(universeDTO, userDetails);
     }
 
     @Operation(summary = "Update an existing universe")
@@ -45,5 +49,17 @@ public class UniverseController {
     @DeleteMapping("/{id}")
     public void deleteUniverse(@PathVariable Long id) {
         universeService.deleteUniverse(id);
+    }
+
+    @Operation(summary = "Get universes of the current user", description = "Returns all universes created by the authenticated user")
+    @GetMapping("/me")
+    public List<UniverseDTO> getMyUniverses(@AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return universeService.getUniversesByCurrentUser(userDetails);
+    }
+
+    @Operation(summary = "Duplicate a universe", description = "Creates a new universe by duplicating an existing one")
+    @PostMapping("/{id}/duplicate")
+    public UniverseDTO duplicateUniverse(@PathVariable Long id, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return universeService.duplicateUniverse(id, userDetails);
     }
 }

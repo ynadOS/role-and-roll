@@ -9,8 +9,12 @@ export interface Campaign {
   description: string;
   userId: number;
   status: string;
+  universeName: string;
   statusLabel?: string;
   universeId?: number | null;
+  createdAt?: string;   // 👈 ajoute ceci
+  updatedAt?: string;   // 👈 et ceci
+
 }
 
 @Injectable({

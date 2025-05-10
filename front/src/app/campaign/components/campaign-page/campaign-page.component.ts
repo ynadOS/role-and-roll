@@ -1,11 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Campaign, CampaignService } from '../../../services/campaigns.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-campaign-page',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './campaign-page.component.html',
-  styleUrl: './campaign-page.component.css'
+  styleUrls: ['./campaign-page.component.css']
 })
-export class CampaignPageComponent {
+export class CampaignPageComponent implements OnInit {
+  campaignId!: number;
+  campaign?: Campaign;
 
+  constructor(
+    private route: ActivatedRoute,
+    private campaignService: CampaignService
+  ) {}
+
+  ngOnInit(): void {
+    this.campaignId = +this.route.snapshot.paramMap.get('id')!;
+    this.campaignService.getById(this.campaignId).subscribe((data: Campaign) => {
+      this.campaign = data;
+    });
+  }
 }

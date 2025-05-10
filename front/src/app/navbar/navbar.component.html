@@ -21,21 +21,8 @@
             <!-- Si connecté -->
              
             <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
-              <li class="relative group">
-                <button type="button" class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-indigo-500 focus:outline-none cursor-pointer">
-                  Campagnes
-                  <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </button>
-                <ul class="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md pt-2 pb-2 rounded w-48 z-50">
-                  <li>
-                    <a routerLink="/campaigns/overview" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Voir les campagnes</a>
-                  </li>
-                  <li>
-                    <a routerLink="/campaigns/create" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Créer une campagne</a>
-                  </li>
-                </ul>
+              <li>
+                <a routerLink="/campaigns" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a>
               </li>
               <li>
                 <a routerLink="/characters" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Personnages</a>

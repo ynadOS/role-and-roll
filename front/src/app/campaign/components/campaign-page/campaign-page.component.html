@@ -1,1 +1,65 @@
-<p>campaign-page works!</p>
+<div *ngIf="campaign" class="max-w-6xl mx-auto p-6 space-y-6 min-h-screen">
+
+  <!-- Card: Campagne (full width) -->
+  <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white">{{ campaign?.title }}</h2>
+      <span
+        class="px-2 py-1 text-xs rounded-full"
+        [ngClass]="{
+          'bg-green-600 text-white dark:bg-green-800 dark:text-white': campaign?.statusLabel === 'Terminé',
+          'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100': campaign?.statusLabel === 'En cours',
+          'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-100': campaign?.statusLabel === 'Brouillon'
+        }"
+      >
+        {{ campaign?.statusLabel }}
+      </span>
+    </div>
+    <p class="text-sm text-gray-700 dark:text-gray-200">
+      Créée le {{ campaign?.createdAt | date: 'dd/MM/yyyy HH:mm' }} •
+      modifiée le {{ campaign?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}
+    </p>
+    <p class="mt-2 text-gray-700 dark:text-gray-200">{{ campaign?.description }}</p>
+  </div>
+
+  <!-- Grid for other cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+
+    <!-- Card: Univers -->
+    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Univers</h2>
+      <p class="text-gray-700 dark:text-gray-200">{{ campaign?.universeName || 'Non spécifié' }}</p>
+    </div>
+
+    <!-- Card: Personnages Joueurs -->
+    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Personnages Joueurs</h2>
+      <p class="text-gray-600 dark:text-gray-300 italic">À venir : liste des PJ...</p>
+    </div>
+
+    <!-- Card: PNJ -->
+    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">PNJ</h2>
+      <p class="text-gray-600 dark:text-gray-300 italic">À venir : liste des PNJ...</p>
+    </div>
+
+    <!-- Card: Sessions -->
+    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Sessions de jeu</h2>
+      <p class="text-gray-600 dark:text-gray-300 italic">À venir : résumé des parties...</p>
+    </div>
+
+    <!-- Card: Objets & Lieux -->
+    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Objets & Lieux</h2>
+      <p class="text-gray-600 dark:text-gray-300 italic">À venir : objets liés aux lieux...</p>
+    </div>
+
+    <!-- Card: Commentaires & Stories -->
+    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Commentaires & Stories</h2>
+      <p class="text-gray-600 dark:text-gray-300 italic">À venir : contenu narratif et retours joueurs...</p>
+    </div>
+
+  </div>
+</div>

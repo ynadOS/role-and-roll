@@ -1,8 +1,71 @@
 <nav class="py-4">
   <header class="bg-white dark:bg-gray-900 shadow-md py-6">
-    <div class="container mx-auto flex items-center justify-between">
-      <!-- Logo -->
-      <a routerLink="/" class="flex items-center space-x-2">
+    <div class="container mx-auto flex items-center justify-between h-20">
+      <!-- Logo and Hamburger container -->
+      <div class="flex items-center justify-between w-full sm:hidden">
+        <a routerLink="/" class="flex items-center space-x-2">
+          <img src="/images/logo.png" alt="Logo site" class="h-12 dark:hidden" />
+          <img src="/images/logo-dark.png" alt="Logo site" class="h-12 hidden dark:block" />
+          <span class="text-2xl font-bold text-gray-900 dark:text-white">
+            <span class="text-indigo-500">Role</span> & Roll
+          </span>
+        </a>
+        <div class="flex items-center space-x-2">
+          <button
+            (click)="toggleDarkMode()"
+            [class]="'p-2 rounded-full border transition relative group overflow-hidden ml-2 ' + (isDarkMode ? 'border-gray-600' : 'border-gray-300')"
+            [ngClass]="{
+              'bg-indigo-600 hover:bg-indigo-900': !isDarkMode,
+              'bg-gray-700 hover:bg-gray-600': isDarkMode
+            }"
+            aria-label="Toggle dark mode"
+          >
+            <div class="relative h-6 w-6">
+              <!-- Soleil -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                class="absolute inset-0 h-6 w-6 text-yellow-300 transition-all duration-500 ease-in-out"
+                [ngClass]="{ 'opacity-100 scale-100 rotate-0': isDarkMode, 'opacity-0 scale-90 rotate-45': !isDarkMode }"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+
+              <!-- Lune -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute inset-0 h-6 w-6 text-yellow-200 transition-all duration-500 ease-in-out"
+                [ngClass]="{ 'opacity-0 scale-90 -rotate-45': isDarkMode, 'opacity-100 scale-100 rotate-0': !isDarkMode }"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+              </svg>
+            </div>
+          </button>
+          <button (click)="isMobileMenuOpen = !isMobileMenuOpen" class="text-gray-700 dark:text-gray-300 focus:outline-none ml-4 mr-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Logo and Dark mode toggle for desktop -->
+      <a routerLink="/" class="hidden sm:flex items-center space-x-2">
         <img src="/images/logo.png" alt="Logo site" class="h-12 dark:hidden" />
         <img src="/images/logo-dark.png" alt="Logo site" class="h-12 hidden dark:block" />
         <span class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -10,102 +73,150 @@
         </span>
       </a>
 
-      <!-- Liens de navigation + bouton dark mode -->
-      <div class="flex items-center space-x-6">
-        <nav>
-          <ul class="flex space-x-6">
-            <li>
-              <a routerLink="/" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Accueil</a>
-            </li>
+      <ul
+        class="hidden sm:flex flex-col sm:flex-row sm:ml-auto sm:justify-end space-y-4 sm:space-y-0 sm:space-x-6 items-center text-center"
+      >
+        <li>
+          <a routerLink="/" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Accueil</a>
+        </li>
 
-            <!-- Si connecté -->
-             
-            <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
+        <!-- Si connecté -->
+         
+        <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
+          <li class="relative group">
+            <button type="button" class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
+              Campagnes
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <ul class="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md pt-2 pb-2 rounded w-48 z-50">
               <li>
-                <a routerLink="/campaigns" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a>
+                <a routerLink="/campaigns" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Mes campagnes</a>
               </li>
               <li>
-                <a routerLink="/characters" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Personnages</a>
+                <a routerLink="/universes" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Univers</a>
               </li>
               <li>
-                <a routerLink="/tools" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Outils</a>
+                <a routerLink="/characters" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Personnages</a>
               </li>
-              <li class="relative group">
-                <button type="button" class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-indigo-500 focus:outline-none cursor-pointer">
-                  Mon compte
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                    <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-                <ul class="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md pt-2 pb-2 rounded w-48 z-50">
-                  <li>
-                    <button (click)="authService.logout()" class="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Mes infos</button>
-                  </li>                  <li>
-                    <button (click)="authService.logout()" class="w-full text-left block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">Déconnexion</button>
-                  </li>
-                </ul>
+            </ul>
+          </li>
+          <li>
+            <a routerLink="/tools" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Outils</a>
+          </li>
+          <li class="relative group">
+            <button type="button" class="flex items-center gap-2 px-3 py-2 rounded text-gray-700 dark:text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 2a5 5 0 00-4.546 2.916A5 5 0 0010 12a5 5 0 004.546-7.084A5 5 0 0010 2zM4 16a6 6 0 1112 0H4z" />
+              </svg>
+              Bonjour, {{ username }} 
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <ul class="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md pt-2 pb-2 rounded w-48 z-50">
+              <li>
+                <button (click)="authService.logout()" class="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Mes infos</button>
               </li>
-            </ng-container>
+              <li>
+                <button (click)="authService.logout()" class="w-full text-left block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">Déconnexion</button>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
 
-            <!-- Si NON connecté -->
-            <ng-template #guestLinks>
-              <li>
-                <a routerLink="/register" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Inscription</a>
-              </li>
-              <li>
-                <a routerLink="/login" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Connexion</a>
-              </li>
-            </ng-template>
-          </ul>
-        </nav>
+        <!-- Si NON connecté -->
+        <ng-template #guestLinks>
+          <li>
+            <a routerLink="/register" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Inscription</a>
+          </li>
+          <li>
+            <a routerLink="/login" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Connexion</a>
+          </li>
+        </ng-template>
 
-        <!-- Bouton dark mode -->
-        <button
-          (click)="toggleDarkMode()"
-          [class]="'p-2 rounded-full border transition relative group overflow-hidden ' + (isDarkMode ? 'border-gray-600' : 'border-gray-300')"
-          [ngClass]="{
-            'bg-indigo-600 hover:bg-indigo-900': !isDarkMode,
-            'bg-gray-700 hover:bg-gray-600': isDarkMode
-          }"
-          aria-label="Toggle dark mode"
-        >
-          <div class="relative h-6 w-6">
-            <!-- Soleil -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              class="absolute inset-0 h-6 w-6 text-yellow-300 transition-all duration-500 ease-in-out"
-              [ngClass]="{ 'opacity-100 scale-100 rotate-0': isDarkMode, 'opacity-0 scale-90 rotate-45': !isDarkMode }"
-              fill="currentColor"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <line x1="12" y1="1" x2="12" y2="3" />
-              <line x1="12" y1="21" x2="12" y2="23" />
-              <line x1="1" y1="12" x2="3" y2="12" />
-              <line x1="21" y1="12" x2="23" y2="12" />
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        <li class="relative">
+          <button class="relative text-gray-700 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
+            <span
+              class="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">1</span>
+          </button>
+        </li>
 
-            <!-- Lune -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="absolute inset-0 h-6 w-6 text-yellow-200 transition-all duration-500 ease-in-out"
-              [ngClass]="{ 'opacity-0 scale-90 -rotate-45': isDarkMode, 'opacity-100 scale-100 rotate-0': !isDarkMode }"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-            </svg>
-          </div>
-        </button>
-      </div>
+        <li>
+          <button
+            (click)="toggleDarkMode()"
+            [class]="'p-2 rounded-full border transition relative group overflow-hidden ' + (isDarkMode ? 'border-gray-600' : 'border-gray-300')"
+            [ngClass]="{
+              'bg-indigo-600 hover:bg-indigo-900': !isDarkMode,
+              'bg-gray-700 hover:bg-gray-600': isDarkMode
+            }"
+            aria-label="Toggle dark mode"
+          >
+            <div class="relative h-6 w-6">
+              <!-- Soleil -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                class="absolute inset-0 h-6 w-6 text-yellow-300 transition-all duration-500 ease-in-out"
+                [ngClass]="{ 'opacity-100 scale-100 rotate-0': isDarkMode, 'opacity-0 scale-90 rotate-45': !isDarkMode }"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+
+              <!-- Lune -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute inset-0 h-6 w-6 text-yellow-200 transition-all duration-500 ease-in-out"
+                [ngClass]="{ 'opacity-0 scale-90 -rotate-45': isDarkMode, 'opacity-100 scale-100 rotate-0': !isDarkMode }"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+              </svg>
+            </div>
+          </button>
+        </li>
+      </ul>
     </div>
   </header>
+
+  <div class="sm:hidden" *ngIf="isMobileMenuOpen">
+    <div class="bg-white dark:bg-gray-900 py-4 px-6 space-y-4 text-center flex flex-col items-center w-full">
+      <a routerLink="/" class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 py-2">Accueil</a>
+      <ng-container *ngIf="authService.isLoggedIn(); else guestLinksMobile">
+        <a routerLink="/campaigns" class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 py-2">Campagnes</a>
+        <a routerLink="/characters" class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 py-2">Personnages</a>
+        <a routerLink="/tools" class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 py-2">Outils</a>
+        <div class="flex items-center justify-center gap-2 py-2 text-gray-700 dark:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 2a5 5 0 00-4.546 2.916A5 5 0 0010 12a5 5 0 004.546-7.084A5 5 0 0010 2zM4 16a6 6 0 1112 0H4z" />
+          </svg>
+          Bonjour, {{ username }}
+        </div>
+        <button (click)="authService.logout()" class="text-center block text-red-500 hover:text-red-700 py-2">Déconnexion</button>
+      </ng-container>
+      <ng-template #guestLinksMobile>
+        <a routerLink="/register" class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 py-2">Inscription</a>
+        <a routerLink="/login" class="block text-gray-700 dark:text-gray-300 hover:text-indigo-500 py-2">Connexion</a>
+      </ng-template>
+    </div>
+  </div>
 </nav>

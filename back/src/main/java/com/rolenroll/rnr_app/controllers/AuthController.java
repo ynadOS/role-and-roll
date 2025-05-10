@@ -24,6 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "Endpoints for user registration and login")
@@ -79,10 +82,16 @@ public class AuthController {
 
     @Operation(summary = "Connected user ID", description = "Return the connected user ID")
     @GetMapping("/me")
-    public ResponseEntity<Long> getCurrentUserId(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Map<String, Object>> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         Long userId = jwtService.extractUserId(token);
-        return ResponseEntity.ok(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", userId);
+        userInfo.put("name", user.getName());
+
+        return ResponseEntity.ok(userInfo);
     }
 
     @GetMapping("/test-auth")

@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
-import { CampaignService } from '../../../services/campaigns.service';
+import { Campaign, CampaignService } from '../../../services/campaigns.service';
 import { AuthService } from '../../../services/auth.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,8 +19,8 @@ export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
   campaigns: any[] = [];
   statuses: { value: string, label: string }[] = [];
   universes: any[] = [];
-  
 
+  isCreateModalOpen = false; // Contrôle de la modale de création
   isDeleteModalOpen = false; // Contrôle de la modale
   selectedCampaignId: number | null = null;
   @ViewChild('modalBackdrop') modalBackdrop!: ElementRef;
@@ -86,17 +86,16 @@ export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
   }
 
   isEditModalOpen = false;
-  campaignToEdit: any = null;
+  campaignToEdit: Campaign | undefined = undefined;
 
-  openEditModal(campaign: any): void {
+  openEditModal(campaign: Campaign): void {
     this.campaignToEdit = { ...campaign }; // On copie pour ne pas modifier directement
-    this.isEditModalOpen = true;
+    setTimeout(() => this.isEditModalOpen = true, 0);
   }
 
   closeEditModal(): void {
     this.isEditModalOpen = false;
-    this.campaignToEdit = null;
-    window.location.href = '/campaigns/overview';
+    this.campaignToEdit = undefined;
   }
 
   handleEditSuccess(): void {
@@ -115,5 +114,25 @@ export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
     if (this.isDeleteModalOpen && this.modalBackdrop) {
       this.modalBackdrop.nativeElement.focus();
     }
+  }
+
+  openCreateModal(): void {
+    this.isCreateModalOpen = true;
+  }
+
+  closeCreateModal(): void {
+    this.isCreateModalOpen = false;
+  }
+
+  handleCreateSuccess(): void {
+    this.campaignService.getMyCampaigns().subscribe({
+      next: (data) => {
+        this.campaigns = data;
+        this.closeCreateModal();
+      },
+      error: (err) => {
+        console.error('Erreur lors du rechargement des campagnes :', err);
+      }
+    });
   }
 }

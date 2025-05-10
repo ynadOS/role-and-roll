@@ -11,21 +11,28 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  username?: string;
   isDarkMode = false;
   isMenuOpen = false;
   showCampaignMenu: boolean = false;
+  isMobileMenuOpen = false;
   isBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, public authService: AuthService) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-
     if (this.isBrowser) {
       const savedTheme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
       this.isDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
-
       this.applyTheme();
+    }
+  }
+
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.authService.getMe().subscribe(user => {
+        this.username = user.name;
+      });
     }
   }
 
@@ -46,5 +53,13 @@ export class NavbarComponent {
     } else {
       htmlEl.classList.remove('dark');
     }
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 }

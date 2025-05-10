@@ -6,16 +6,16 @@
 >
   <div
     #modalContainer
-    class="modal-content bg-gray-200 dark:bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-2xl"
+    class="modal-content bg-gray-200 dark:bg-gray-800 p-4 sm:p-6 rounded-none sm:rounded-lg shadow-lg w-full h-auto max-h-screen sm:max-h-[90vh] m-0 sm:my-8 max-w-full sm:max-w-md md:max-w-lg lg:max-w-2xl"
     tabindex="-1"
   >
     <div class="modal-header flex justify-between items-center mb-4 text-blue-dark">
-      <h2 class="text-lg font-semibold">
+      <h2 class="text-3xl sm:text-4xl font-semibold">
         {{ title }}
       </h2>
       <button type="button" class="close-button text-gray-600 dark:text-gray-300 hover:text-red-600 text-xl" (click)="emitClose()">&times;</button>
     </div>
-    <div class="modal-body text-blue-dark">
+    <div class="modal-body text-blue-dark text-base sm:text-lg">
       <ng-content></ng-content>
     </div>
     <div class="modal-footer flex justify-end mt-4">

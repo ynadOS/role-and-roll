@@ -82,14 +82,7 @@ export class AuthService {
   }
 
   getMe(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/me`).pipe(
-      tap((user) => {
-        this.currentUser = user;
-        this.authCheckInProgress.next(false);
-      }, () => {
-        this.authCheckInProgress.next(false);
-      })
-    );
+    return this.http.get<any>(`${this.apiUrl}/me`);
   }
 
 }

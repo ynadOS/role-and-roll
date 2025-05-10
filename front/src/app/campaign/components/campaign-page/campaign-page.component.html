@@ -1,63 +1,221 @@
 <div *ngIf="campaign" class="max-w-6xl mx-auto p-6 space-y-6 min-h-screen">
 
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow px-6 py-4 mb-6">
+    <div>
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-1">
+        Tableau de bord : {{ campaign.title }}
+      </h1>
+      <p class="text-sm text-gray-600 dark:text-gray-400">
+        Créée le {{ campaign.createdAt | date: 'dd/MM/yyyy' }} • Modifiée le {{ campaign.updatedAt | date: 'dd/MM/yyyy' }}
+      </p>
+    </div>
+    <div>
+      <button
+        class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-lg shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-400"
+        (click)="handleAdd('inviter')"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+        </svg>
+        Inviter
+      </button>
+    </div>
+  </div>
+
+  <nav class="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 py-3 shadow-md border-b border-gray-200 dark:border-gray-700 mb-6 transition-all duration-300">
+    <ul class="flex flex-wrap justify-center items-center gap-6 text-sm font-medium text-gray-600 dark:text-gray-300 transition-opacity duration-300">
+      <li><a [routerLink]="['/campaigns', campaign.id]" fragment="univers" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">Univers</a></li>
+      <li><a [routerLink]="['/campaigns', campaign.id]" fragment="pj" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">PJ</a></li>
+      <li><a [routerLink]="['/campaigns', campaign.id]" fragment="pnj" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">PNJ</a></li>
+      <li><a [routerLink]="['/campaigns', campaign.id]" fragment="sessions" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">Sessions</a></li>
+      <li><a [routerLink]="['/campaigns', campaign.id]" fragment="objets" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">Objets</a></li>
+      <li><a [routerLink]="['/campaigns', campaign.id]" fragment="commentaires" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">Commentaires</a></li>
+      <li class="relative flex items-center">
+        <button
+          (click)="showAddMenu = !showAddMenu"
+          class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold rounded-lg shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Ajouter
+        </button>
+        <div *ngIf="showAddMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-lg z-20">
+          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="handleAdd('inviter')">
+            👤 Inviter un joueur
+          </button>
+          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="handleAdd('session')">
+            📅 Ajouter une session
+          </button>
+          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="handleAdd('pnj')">
+            🎭 Ajouter un PNJ
+          </button>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
   <!-- Card: Campagne (full width) -->
-  <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+  <div id="campagne" class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+    <img src="https://i0.wp.com/nerdarchy.com/wp-content/uploads/2016/04/d_d_4.0_party_art.jpg?w=800&ssl=1" 
+         alt="Illustration de la campagne" 
+         class="w-full h-48 object-cover rounded-t-lg mb-4">
     <div class="flex items-center justify-between mb-2">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white">{{ campaign?.title }}</h2>
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white">{{ campaign.title }}</h2>
       <span
         class="px-2 py-1 text-xs rounded-full"
         [ngClass]="{
-          'bg-green-600 text-white dark:bg-green-800 dark:text-white': campaign?.statusLabel === 'Terminé',
-          'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100': campaign?.statusLabel === 'En cours',
-          'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-100': campaign?.statusLabel === 'Brouillon'
+          'bg-green-600 text-white dark:bg-green-800 dark:text-white': campaign.statusLabel === 'Terminé',
+          'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100': campaign.statusLabel === 'En cours',
+          'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-100': campaign.statusLabel === 'Brouillon'
         }"
       >
-        {{ campaign?.statusLabel }}
+        {{ campaign.statusLabel }}
       </span>
     </div>
     <p class="text-sm text-gray-700 dark:text-gray-200">
-      Créée le {{ campaign?.createdAt | date: 'dd/MM/yyyy HH:mm' }} •
-      modifiée le {{ campaign?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}
+      Créée le {{ campaign.createdAt | date: 'dd/MM/yyyy HH:mm' }} •
+      modifiée le {{ campaign.updatedAt | date: 'dd/MM/yyyy HH:mm' }}
     </p>
-    <p class="mt-2 text-gray-700 dark:text-gray-200">{{ campaign?.description }}</p>
+    <p class="mt-2 text-gray-700 dark:text-gray-200">{{ campaign.description }}</p>
   </div>
 
   <!-- Grid for other cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 
     <!-- Card: Univers -->
-    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Univers</h2>
-      <p class="text-gray-700 dark:text-gray-200">{{ campaign?.universeName || 'Non spécifié' }}</p>
+    <div id="univers" class="scroll-mt-[56px] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <img src="https://cdn.htmr.kr/uploads/news/_thumbnailWebp/2889347/warhammer-rpg-canceled.webp"
+           alt="Illustration de l'univers"
+           class="w-full h-32 object-cover rounded-t-lg mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Univers</h2>
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          (click)="handleAdd('auto')"
+        >
+          +
+        </button>
+      </div>
+      <p class="text-gray-700 dark:text-gray-200">{{ campaign.universeName || 'Non spécifié' }}</p>
+      <hr class="my-4 border-gray-300 dark:border-gray-600">
+
+      <div class="space-y-4 text-sm text-gray-700 dark:text-gray-200">
+        <div>
+          <h3 class="text-base font-semibold text-indigo-600 dark:text-indigo-300 mb-1">Description</h3>
+          <p>Monde fantastique rempli de conflits entre royaumes anciens et puissances occultes.</p>
+        </div>
+
+        <div>
+          <h3 class="text-base font-semibold text-indigo-600 dark:text-indigo-300 mb-1">Règles spéciales</h3>
+          <p>Utilisation avancée de la magie noire et limitation des armures lourdes aux classes d’élite.</p>
+        </div>
+
+        <div>
+          <h3 class="text-base font-semibold text-indigo-600 dark:text-indigo-300 mb-1">Classes disponibles</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-indigo-100 text-xs font-medium">Guerrier</span>
+            <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-indigo-100 text-xs font-medium">Mage</span>
+            <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-indigo-100 text-xs font-medium">Rodeur</span>
+            <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-indigo-100 text-xs font-medium">Barde</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-base font-semibold text-indigo-600 dark:text-indigo-300 mb-1 mt-3">Races disponibles</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-emerald-100 text-xs font-medium">Humain</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-emerald-100 text-xs font-medium">Elfe</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-emerald-100 text-xs font-medium">Nain</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-700 text-emerald-800 dark:text-emerald-100 text-xs font-medium">Orc</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Card: Personnages Joueurs -->
-    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Personnages Joueurs</h2>
+    <div id="pj" class="scroll-mt-[56px] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Personnages Joueurs</h2>
+      </div>
       <p class="text-gray-600 dark:text-gray-300 italic">À venir : liste des PJ...</p>
     </div>
 
     <!-- Card: PNJ -->
-    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">PNJ</h2>
+    <div id="pnj" class="scroll-mt-[56px] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">PNJ</h2>
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          (click)="handleAdd('auto')"
+        >
+          +
+        </button>
+      </div>
       <p class="text-gray-600 dark:text-gray-300 italic">À venir : liste des PNJ...</p>
     </div>
 
     <!-- Card: Sessions -->
-    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Sessions de jeu</h2>
-      <p class="text-gray-600 dark:text-gray-300 italic">À venir : résumé des parties...</p>
+    <div id="sessions" class="scroll-mt-[56px] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Sessions de jeu</h2>
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          (click)="handleAdd('auto')"
+        >
+          +
+        </button>
+      </div>
+      <div class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-white">Session 1 – La crypte oubliée</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Jouée le 28/04/2025</p>
+        <p class="text-gray-700 dark:text-gray-200 text-sm">
+          Les aventuriers ont exploré une ancienne crypte enfouie sous la ville d’Eldros. Après avoir vaincu un groupe de goules, ils ont découvert une relique liée à l’origine du fléau.
+        </p>
+      </div>
+      <div class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-white">Session 2 – L'antre de l'esprit</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Jouée le 05/05/2025</p>
+        <p class="text-gray-700 dark:text-gray-200 text-sm">
+          Alors que la brume envahissait les bois, le groupe pénétra une ancienne ruine elfique à la recherche de la pierre de clairvoyance...
+          <span class="text-indigo-500 hover:underline cursor-pointer">lire la suite</span>
+        </p>
+      </div>
+      <div class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-white">Session 3 – L'éveil de la forge</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Jouée le 12/05/2025</p>
+        <p class="text-gray-700 dark:text-gray-200 text-sm">
+          Dans les profondeurs volcaniques du Mont Garnak, les héros affrontèrent un golem de feu gardien de l’ancien savoir des forgerons nains...
+          <span class="text-indigo-500 hover:underline cursor-pointer">lire la suite</span>
+        </p>
+      </div>
     </div>
 
     <!-- Card: Objets & Lieux -->
-    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Objets & Lieux</h2>
+    <div id="objets" class="scroll-mt-[56px] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Objets & Lieux</h2>
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          (click)="handleAdd('auto')"
+        >
+          +
+        </button>
+      </div>
       <p class="text-gray-600 dark:text-gray-300 italic">À venir : objets liés aux lieux...</p>
     </div>
 
     <!-- Card: Commentaires & Stories -->
-    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Commentaires & Stories</h2>
+    <div id="commentaires" class="scroll-mt-[56px] bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-gray-300 dark:border-gray-700">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Commentaires & Stories</h2>
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          (click)="handleAdd('auto')"
+        >
+          +
+        </button>
+      </div>
       <p class="text-gray-600 dark:text-gray-300 italic">À venir : contenu narratif et retours joueurs...</p>
     </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -20,7 +20,7 @@ interface Universe {
   styleUrls: ['./campaign-form.component.css'],
   imports: [FormsModule, CommonModule, RouterModule]
 })
-export class CampaignFormComponent implements OnInit {
+export class CampaignFormComponent implements OnInit, OnChanges {
   @Input() campaign?: Campaign;
   @Output() formSubmitted = new EventEmitter<void>();
   @Output() campaignUpdated = new EventEmitter<void>();
@@ -89,7 +89,7 @@ export class CampaignFormComponent implements OnInit {
         next: () => {
           this.creationSuccess = true;
           this.campaignUpdated.emit();
-          window.location.href = '/campaigns/overview';
+          window.location.reload();
         },
         error: (err) => {
           console.error(err);
@@ -107,7 +107,7 @@ export class CampaignFormComponent implements OnInit {
       this.campaignService.createCampaign(newCampaign).subscribe({
         next: () => {
           this.creationSuccess = true;
-          setTimeout(() => this.router.navigate(['/campaigns/overview']), 500);
+          window.location.reload();
         },
         error: (err) => {
           console.error(err);
@@ -115,6 +115,14 @@ export class CampaignFormComponent implements OnInit {
           this.isSubmitting = false;
         }
       });
+    }
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['campaign']?.currentValue) {
+      this.title = this.campaign!.title;
+      this.description = this.campaign!.description;
+      this.selectedUniverseId = this.campaign!.universeId ?? null;
+      this.selectedStatus = this.campaign!.status;
     }
   }
 }

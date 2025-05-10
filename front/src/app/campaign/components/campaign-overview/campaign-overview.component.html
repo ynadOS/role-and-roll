@@ -37,28 +37,40 @@
   </div>
 
   <!-- Modale d'édition -->
-  <div
+  <app-modal
     *ngIf="isEditModalOpen"
-    #editModalBackdrop
-    class="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50"
-    (click)="closeEditModal()"
-    (keydown.escape)="closeEditModal()"
-    tabindex="0"
+    [isOpen]="isEditModalOpen"
+    [title]="'Modifier la campagne'"
+    [escClosable]="true"
+    [backdropClosable]="true"
+    (close)="closeEditModal()"
   >
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96" (click)="$event.stopPropagation()">
-      <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Modifier la campagne</h3>
-      <app-campaign-form
-        [campaign]="campaignToEdit"
-        [statuses]="statuses"
-        [universes]="universes"
-        (formSubmitted)="handleEditSuccess()"
-      ></app-campaign-form>
-    </div>
-  </div>
+    <app-campaign-form
+      [campaign]="campaignToEdit"
+      [statuses]="statuses"
+      [universes]="universes"
+      (formSubmitted)="handleEditSuccess()"
+    ></app-campaign-form>
+  </app-modal>
+  <app-modal
+    *ngIf="isCreateModalOpen"
+    [isOpen]="isCreateModalOpen"
+    [title]="'Créer une campagne'"
+    [escClosable]="true"
+    [backdropClosable]="true"
+    (close)="closeCreateModal()"
+  >
+    <app-campaign-form
+      [statuses]="statuses"
+      [universes]="universes"
+      (formSubmitted)="handleCreateSuccess()"
+    ></app-campaign-form>
+  </app-modal>
   <div class="flex items-center gap-2 mb-4 h-10">
     <h2 class="text-xl font-semibold text-gray-800 dark:text-white m-0 leading-tight">Mes campagnes</h2>
-    <a
-      routerLink="/campaigns/create"
+    <button
+      type="button"
+      (click)="openCreateModal()"
       title="Créer une nouvelle campagne"
       aria-label="Créer une nouvelle campagne"
       class="flex items-center justify-center h-10 text-gray-800 dark:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500 px-3 rounded-md text-base font-medium"
@@ -66,8 +78,8 @@
       <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
       </svg>
-      <span class="hidden sm:inline ml-1">Nouvelle</span>
-    </a>
+      <span class="hidden sm:inline ml-1">Ajouter</span>
+    </button>
   </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-stretch">
     <div

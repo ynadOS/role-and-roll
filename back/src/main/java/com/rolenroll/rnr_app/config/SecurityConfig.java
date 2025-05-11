@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/campaigns/statuses").permitAll()
                         .requestMatchers("/ws/notifications/**").permitAll() // Permet l'accès à /ws/notifications
                         .requestMatchers(

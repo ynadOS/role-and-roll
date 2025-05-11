@@ -14,10 +14,13 @@ public class RefreshToken {
     private String token;
 
     @Column(name = "date_creation", nullable = false)
-    private ZonedDateTime dateCreation;
+    private ZonedDateTime dateCreation = ZonedDateTime.now();
 
     @Column(nullable = false)
     private ZonedDateTime expiry;
+
+    @Column(nullable = false)
+    private boolean revoked = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -66,6 +69,14 @@ public class RefreshToken {
 
     public void setExpiry(ZonedDateTime expiry) {
         this.expiry = expiry;
+    }
+
+    public boolean isRevoked() {
+        return revoked;
+    }
+
+    public void setRevoked(boolean revoked) {
+        this.revoked = revoked;
     }
 
     public User getUser() {

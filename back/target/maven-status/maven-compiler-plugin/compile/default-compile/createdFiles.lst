@@ -7,6 +7,7 @@ com/rolenroll/rnr_app/dto/auth/AuthResponseDTO.class
 com/rolenroll/rnr_app/entities/Note.class
 com/rolenroll/rnr_app/entities/File.class
 com/rolenroll/rnr_app/entities/Story.class
+com/rolenroll/rnr_app/services/RefreshTokenService.class
 com/rolenroll/rnr_app/mappers/UserMapper.class
 com/rolenroll/rnr_app/controllers/AuthController.class
 com/rolenroll/rnr_app/controllers/HelloWorldController.class
@@ -17,6 +18,7 @@ com/rolenroll/rnr_app/dto/auth/RegisterRequestDTO.class
 com/rolenroll/rnr_app/dto/CampaignDTO.class
 com/rolenroll/rnr_app/repositories/InvitationRepository.class
 com/rolenroll/rnr_app/config/WebSocketConfig.class
+com/rolenroll/rnr_app/repositories/RefreshTokenRepository.class
 com/rolenroll/rnr_app/entities/Scenario.class
 com/rolenroll/rnr_app/dto/SessionDTO.class
 com/rolenroll/rnr_app/entities/Shareable.class
@@ -36,6 +38,7 @@ com/rolenroll/rnr_app/entities/CampaignStatus.class
 com/rolenroll/rnr_app/mappers/CampaignMapper.class
 com/rolenroll/rnr_app/entities/NPC.class
 com/rolenroll/rnr_app/config/SecurityConfig.class
+com/rolenroll/rnr_app/dto/RefreshTokenDTO.class
 com/rolenroll/rnr_app/controllers/InvitationController.class
 com/rolenroll/rnr_app/entities/Session.class
 com/rolenroll/rnr_app/entities/Player.class
@@ -43,6 +46,7 @@ com/rolenroll/rnr_app/mappers/StoryMapper.class
 com/rolenroll/rnr_app/dto/UniverseDTO.class
 com/rolenroll/rnr_app/services/NotificationService.class
 com/rolenroll/rnr_app/dto/StoryDTO.class
+com/rolenroll/rnr_app/mappers/RefreshTokenMapper.class
 com/rolenroll/rnr_app/entities/InvitationStatus.class
 com/rolenroll/rnr_app/entities/Universe.class
 com/rolenroll/rnr_app/security/JwtFilter.class
@@ -65,3 +69,4 @@ com/rolenroll/rnr_app/services/CampaignService.class
 com/rolenroll/rnr_app/entities/RefreshToken.class
 com/rolenroll/rnr_app/repositories/StoryRepository.class
 com/rolenroll/rnr_app/repositories/NoteRepository.class
+com/rolenroll/rnr_app/controllers/RefreshTokenController.class

@@ -1,5 +1,12 @@
 package com.rolenroll.rnr_app.controllers;
 
+import com.rolenroll.rnr_app.entities.RefreshToken;
+import com.rolenroll.rnr_app.services.RefreshTokenService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
+
 import com.rolenroll.rnr_app.dto.UserDTO;
 import com.rolenroll.rnr_app.dto.auth.AuthRequestDTO;
 import com.rolenroll.rnr_app.dto.auth.AuthResponseDTO;
@@ -14,7 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,17 +39,26 @@ import java.util.Map;
 @Tag(name = "Authentication", description = "Endpoints for user registration and login")
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authManager;
+    private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Value("${jwt.refresh-expiration}")
+    private long refreshExpirationMs;
 
-    @Autowired
-    private AuthenticationManager authManager;
-
-    @Autowired
-    private JwtService jwtService;
+    public AuthController(UserRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                          AuthenticationManager authManager,
+                          JwtService jwtService,
+                          RefreshTokenService refreshTokenService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authManager = authManager;
+        this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
+    }
 
     @Operation(summary = "Register a new user", description = "Creates a new user account with encoded password and returns the user data")
     @ApiResponses({
@@ -67,7 +83,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request, HttpServletResponse response) {
         User user = userRepository.findByName(request.username())
                 .or(() -> userRepository.findByEmail(request.username()))
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
@@ -77,6 +93,22 @@ public class AuthController {
         }
 
         String token = jwtService.generateToken(user);
+
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setToken(java.util.UUID.randomUUID().toString());
+        refreshToken.setUser(user);
+        refreshToken.setDateCreation(java.time.ZonedDateTime.now());
+        refreshToken.setExpiry(java.time.ZonedDateTime.now().plusSeconds(refreshExpirationMs / 1000));
+        refreshToken.setRevoked(false);
+        refreshTokenService.save(refreshToken);
+
+        Cookie cookie = new Cookie("refreshToken", refreshToken.getToken());
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true); // Set to true in production
+        cookie.setPath("/");
+        cookie.setMaxAge((int) (refreshExpirationMs / 1000)); // 4 days
+        response.addCookie(cookie);
+
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 
@@ -106,4 +138,51 @@ public class AuthController {
         return ResponseEntity.ok("You are authenticated!");
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshAccessToken(@CookieValue("refreshToken") String refreshTokenValue,
+                                                HttpServletResponse response) {
+        Optional<RefreshToken> optionalToken = refreshTokenService.findByToken(refreshTokenValue);
+
+        if (optionalToken.isEmpty() || optionalToken.get().isRevoked()) {
+            return ResponseEntity.status(403).body("Invalid refresh token");
+        }
+
+        RefreshToken oldToken = optionalToken.get();
+        RefreshToken newToken = refreshTokenService.rotateToken(oldToken);
+
+        newToken.setDateCreation(java.time.ZonedDateTime.now());
+        newToken.setExpiry(java.time.ZonedDateTime.now().plusSeconds(refreshExpirationMs / 1000));
+
+        Cookie cookie = new Cookie("refreshToken", newToken.getToken());
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true); // Set to true in production with HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge((int) (refreshExpirationMs / 1000));
+
+        response.addCookie(cookie);
+
+        String newAccessToken = jwtService.generateToken(newToken.getUser());
+
+        return ResponseEntity.ok(new AuthResponseDTO(newAccessToken));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@CookieValue(value = "refreshToken", required = false) String refreshTokenValue,
+                                    HttpServletResponse response) {
+        if (refreshTokenValue != null) {
+            refreshTokenService.findByToken(refreshTokenValue).ifPresent(token -> {
+                token.setRevoked(true);
+                refreshTokenService.save(token);
+            });
+
+            Cookie cookie = new Cookie("refreshToken", null);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true); // Set to true in production
+            cookie.setPath("/");
+            cookie.setMaxAge(0); // Deletes the cookie
+            response.addCookie(cookie);
+        }
+
+        return ResponseEntity.ok().body("Logged out successfully");
+    }
 }

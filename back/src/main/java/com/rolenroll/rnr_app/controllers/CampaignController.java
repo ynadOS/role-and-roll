@@ -49,8 +49,8 @@ public class CampaignController {
             @ApiResponse(responseCode = "404", description = "Campaign not found")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CampaignDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(campaignService.getCampaignById(id));
+    public ResponseEntity<CampaignDTO> getById(@PathVariable Long id, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return ResponseEntity.ok(campaignService.getCampaignById(id, userDetails));
     }
 
     @Operation(summary = "Update campaign", description = "Updates an existing campaign")

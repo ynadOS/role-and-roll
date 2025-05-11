@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
 export class CampaignPageComponent implements OnInit, AfterViewInit {
   campaignId!: number;
   campaign?: Campaign;
-  showAddMenu = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,23 +37,5 @@ export class CampaignPageComponent implements OnInit, AfterViewInit {
         }, 0);
       }
     });
-  }
-
-  handleAdd(type: string): void {
-    this.showAddMenu = false;
-    switch (type) {
-      case 'inviter':
-        console.log('Ajouter un joueur');
-        // ouvrir modal ou exécuter logique pour inviter
-        break;
-      case 'session':
-        console.log('Ajouter une session');
-        // logique pour ajouter une session
-        break;
-      case 'pnj':
-        console.log('Ajouter un PNJ');
-        // logique pour ajouter un PNJ
-        break;
-    }
   }
 }

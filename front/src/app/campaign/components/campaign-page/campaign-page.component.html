@@ -12,7 +12,6 @@
     <div>
       <button
         class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-lg shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-400"
-        (click)="handleAdd('inviter')"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
@@ -32,7 +31,6 @@
       <li><a [routerLink]="['/campaigns', campaign.id]" fragment="commentaires" class="relative hover:text-indigo-600 transition after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-indigo-500 after:transition-all after:duration-300 hover:after:w-full">Commentaires</a></li>
       <li class="relative flex items-center">
         <button
-          (click)="showAddMenu = !showAddMenu"
           class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold rounded-lg shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -40,14 +38,14 @@
           </svg>
           Ajouter
         </button>
-        <div *ngIf="showAddMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-lg z-20">
-          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="handleAdd('inviter')">
+        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-lg z-20">
+          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             👤 Inviter un joueur
           </button>
-          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="handleAdd('session')">
+          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             📅 Ajouter une session
           </button>
-          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" (click)="handleAdd('pnj')">
+          <button class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             🎭 Ajouter un PNJ
           </button>
         </div>
@@ -92,7 +90,6 @@
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">Univers</h2>
         <button
           class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          (click)="handleAdd('auto')"
         >
           +
         </button>
@@ -147,7 +144,6 @@
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">PNJ</h2>
         <button
           class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          (click)="handleAdd('auto')"
         >
           +
         </button>
@@ -161,7 +157,6 @@
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">Sessions de jeu</h2>
         <button
           class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          (click)="handleAdd('auto')"
         >
           +
         </button>
@@ -197,7 +192,6 @@
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">Objets & Lieux</h2>
         <button
           class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          (click)="handleAdd('auto')"
         >
           +
         </button>
@@ -211,7 +205,6 @@
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">Commentaires & Stories</h2>
         <button
           class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold shadow hover:shadow-lg hover:brightness-110 transition-transform transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          (click)="handleAdd('auto')"
         >
           +
         </button>

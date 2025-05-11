@@ -68,10 +68,15 @@ public class CampaignService {
     }
 
 
-    public CampaignDTO getCampaignById(Long id) {
-        return campaignRepository.findById(id)
-                .map(campaignMapper::toDTO)
+    public CampaignDTO getCampaignById(Long id, UserDetails userDetails) {
+        Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Campagne introuvable"));
+
+        if (!campaign.getUser().getEmail().equals(userDetails.getUsername())) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à consulter cette campagne");
+        }
+
+        return campaignMapper.toDTO(campaign);
     }
 
     public CampaignDTO updateCampaign(Long id, CampaignDTO dto, UserDetails userDetails) {

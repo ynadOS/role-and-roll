@@ -47,6 +47,10 @@ export class AuthService {
     }
   }
 
+  setToken(token: string) {
+    this.saveToken(token);
+  }
+
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('token');

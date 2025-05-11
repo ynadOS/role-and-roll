@@ -71,41 +71,8 @@
         <span class="text-2xl font-bold text-gray-900 dark:text-white">
           <span class="text-indigo-500">Role</span> & Roll
         </span>
-      </a>
-
-      <ul
-        class="hidden sm:flex flex-col sm:flex-row sm:ml-auto sm:justify-end space-y-4 sm:space-y-0 sm:space-x-6 items-center text-center"
-      >
-        <li>
-          <a routerLink="/" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Accueil</a>
-        </li>
-
-        <!-- Si connecté -->
-         
-        <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
-          <li class="relative group">
-            <button type="button" class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
-              Campagnes
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <ul class="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md pt-2 pb-2 rounded w-48 z-50">
-              <li>
-                <a routerLink="/campaigns" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Mes campagnes</a>
-              </li>
-              <li>
-                <a routerLink="/universes" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Univers</a>
-              </li>
-              <li>
-                <a routerLink="/characters" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Personnages</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a routerLink="/tools" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Outils</a>
-          </li>
-          <li class="relative group">
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <li class="relative group list-none ml-4">
             <button type="button" class="flex items-center gap-2 px-3 py-2 rounded text-gray-700 dark:text-gray-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 2a5 5 0 00-4.546 2.916A5 5 0 0010 12a5 5 0 004.546-7.084A5 5 0 0010 2zM4 16a6 6 0 1112 0H4z" />
@@ -123,6 +90,28 @@
                 <button (click)="authService.logout()" class="w-full text-left block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700">Déconnexion</button>
               </li>
             </ul>
+          </li>
+        </ng-container>
+      </a>
+
+      <ul
+        class="hidden sm:flex flex-col sm:flex-row sm:ml-auto sm:justify-end space-y-4 sm:space-y-0 sm:space-x-6 items-center text-center"
+      >
+        <li>
+          <a routerLink="/" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Accueil</a>
+        </li>
+
+        <!-- Si connecté -->
+         
+        <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
+          <li>
+            <a routerLink="/campaigns" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Campagnes</a>
+          </li>
+          <li>
+            <a routerLink="/universes" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Univers</a>
+          </li>
+          <li>
+            <a routerLink="/tools" class="text-gray-700 dark:text-gray-300 hover:text-indigo-500">Outils</a>
           </li>
         </ng-container>
 

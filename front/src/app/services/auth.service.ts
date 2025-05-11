@@ -1,10 +1,12 @@
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, ReplaySubject, from, of, throwError } from 'rxjs';
+import { tap, switchMap, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { environment } from '../../environments/environments';
+
 
 export interface AuthRequest {
   username: string;
@@ -25,11 +27,14 @@ export interface AuthResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   private platformId = inject(PLATFORM_ID);
 
   authCheckInProgress = new BehaviorSubject<boolean>(true);
   currentUser: any = null;
+
+  private refreshInProgress = false;
+  private refreshTokenSubject = new ReplaySubject<string>(1);
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -87,6 +92,35 @@ export class AuthService {
 
   getMe(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/me`);
+  }
+
+  refreshAccessToken(): Observable<string> {
+    if (this.refreshInProgress) {
+      return this.refreshTokenSubject.asObservable();
+    }
+
+    this.refreshInProgress = true;
+
+    return from(
+      fetch(`${this.apiUrl}/refresh`, {
+        method: 'POST',
+        credentials: 'include',
+      }).then(res => {
+        if (!res.ok) throw new Error('Refresh failed');
+        return res.json();
+      })
+    ).pipe(
+      tap(data => {
+        this.setToken(data.token);
+        this.refreshTokenSubject.next(data.token);
+        this.refreshInProgress = false;
+      }),
+      switchMap(data => of(data.token)),
+      catchError(err => {
+        this.refreshInProgress = false;
+        return throwError(() => err);
+      })
+    );
   }
 
 }

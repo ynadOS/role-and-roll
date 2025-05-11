@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/refresh", "/api/auth/register").permitAll()
                         .requestMatchers("/api/campaigns/statuses").permitAll()
                         .requestMatchers("/ws/notifications/**").permitAll() // Permet l'accès à /ws/notifications
                         .requestMatchers(
@@ -82,6 +82,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of("http://localhost:4200")); // Front Angular
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Set-Cookie"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

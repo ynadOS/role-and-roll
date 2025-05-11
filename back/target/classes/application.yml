@@ -47,7 +47,7 @@ spring:
 jwt:
   secret: a-very-strong-secret-key-for-role-n-roll-1234567890!!
   expiration: 900000
-  refresh-expiration: 345600000 # refresh token (4 jours en ms)
+  refresh-expiration: 14400000 # refresh token (4 heures en ms)
 
 logging:
   level:

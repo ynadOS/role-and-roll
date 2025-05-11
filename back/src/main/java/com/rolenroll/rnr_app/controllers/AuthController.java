@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -67,8 +68,11 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterRequestDTO request) {
+        if (userRepository.findByName(request.name().toLowerCase()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         User user = new User();
-        user.setName(request.name());
+        user.setName(request.name().toLowerCase());
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
 
@@ -84,7 +88,7 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request, HttpServletResponse response) {
-        User user = userRepository.findByName(request.username())
+        User user = userRepository.findByName(request.username().toLowerCase())
                 .or(() -> userRepository.findByEmail(request.username()))
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
@@ -102,12 +106,14 @@ public class AuthController {
         refreshToken.setRevoked(false);
         refreshTokenService.save(refreshToken);
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken.getToken());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true); // Set to true in production
-        cookie.setPath("/");
-        cookie.setMaxAge((int) (refreshExpirationMs / 1000)); // 4 days
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(refreshExpirationMs / 1000)
+            .sameSite("None")
+            .build();
+        response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
@@ -153,13 +159,14 @@ public class AuthController {
         newToken.setDateCreation(java.time.ZonedDateTime.now());
         newToken.setExpiry(java.time.ZonedDateTime.now().plusSeconds(refreshExpirationMs / 1000));
 
-        Cookie cookie = new Cookie("refreshToken", newToken.getToken());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true); // Set to true in production with HTTPS
-        cookie.setPath("/");
-        cookie.setMaxAge((int) (refreshExpirationMs / 1000));
-
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", newToken.getToken())
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(refreshExpirationMs / 1000)
+            .sameSite("None")
+            .build();
+        response.addHeader("Set-Cookie", cookie.toString());
 
         String newAccessToken = jwtService.generateToken(newToken.getUser());
 
@@ -175,12 +182,14 @@ public class AuthController {
                 refreshTokenService.save(token);
             });
 
-            Cookie cookie = new Cookie("refreshToken", null);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true); // Set to true in production
-            cookie.setPath("/");
-            cookie.setMaxAge(0); // Deletes the cookie
-            response.addCookie(cookie);
+            ResponseCookie clearedCookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("None")
+                .build();
+            response.addHeader("Set-Cookie", clearedCookie.toString());
         }
 
         return ResponseEntity.ok().body("Logged out successfully");

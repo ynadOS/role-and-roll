@@ -1,4 +1,5 @@
 package com.rolenroll.rnr_app.controllers;
+import java.util.List;
 
 import com.rolenroll.rnr_app.dto.InvitationDTO;
 import com.rolenroll.rnr_app.services.InvitationService;
@@ -31,4 +32,11 @@ public class InvitationController {
     public ResponseEntity<InvitationDTO> declineInvitation(@PathVariable Long id) {
         return ResponseEntity.ok(invitationService.declineInvitation(id));
     }
+
+    @GetMapping("/campaign/{campaignId}")
+    public ResponseEntity<List<InvitationDTO>> getInvitationsByCampaign(@PathVariable Long campaignId) {
+        return ResponseEntity.ok(invitationService.getInvitationsByCampaign(campaignId));
+    }
+
 }
+

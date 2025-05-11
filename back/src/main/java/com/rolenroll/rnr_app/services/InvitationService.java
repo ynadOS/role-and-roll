@@ -1,4 +1,5 @@
 package com.rolenroll.rnr_app.services;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.rolenroll.rnr_app.dto.InvitationDTO;
 import com.rolenroll.rnr_app.entities.Campaign;
@@ -13,6 +14,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InvitationService {
@@ -42,8 +45,9 @@ public class InvitationService {
                 .orElseThrow(() -> new EntityNotFoundException("Campagne ID " + dto.campaignId() + " introuvable"));
 
         // 🧙 Vérification : seul le MJ peut inviter
-        User creator = userRepository.findById(dto.createdById())
-                .orElseThrow(() -> new EntityNotFoundException("Créateur introuvable"));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User creator = userRepository.findByName(username)
+                .orElseThrow(() -> new EntityNotFoundException("Utilisateur connecté introuvable"));
 
         if (!campaign.getCreatedBy().getId().equals(creator.getId())) {
             throw new SecurityException("Seul le maître du jeu peut inviter des joueurs à cette campagne.");
@@ -56,6 +60,10 @@ public class InvitationService {
                         (inv.getStatus() == InvitationStatus.SENT || inv.getStatus() == InvitationStatus.ACCEPTED));
         if (invitationExists) {
             throw new IllegalStateException("Une invitation existe déjà pour cet utilisateur dans cette campagne.");
+        }
+
+        if (user.getId().equals(creator.getId())) {
+            throw new IllegalArgumentException("Vous ne pouvez pas vous inviter vous-même à une campagne.");
         }
 
         // ✅ Création de l'invitation
@@ -85,5 +93,13 @@ public class InvitationService {
         invitation.setStatus(InvitationStatus.DECLINED);
         invitation.setUpdatedAt(LocalDateTime.now());
         return mapper.toDto(invitationRepository.save(invitation));
+    }
+
+    public List<InvitationDTO> getInvitationsByCampaign(Long campaignId) {
+        Campaign campaign = campaignRepository.findById(campaignId)
+                .orElseThrow(() -> new EntityNotFoundException("Campagne ID " + campaignId + " introuvable"));
+
+        List<Invitation> invitations = invitationRepository.findByCampaign(campaign);
+        return invitations.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 }

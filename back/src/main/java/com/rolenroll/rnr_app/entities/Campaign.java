@@ -35,6 +35,9 @@ public class Campaign extends AuditableEntity {
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invitation> invitations;
+
     // Constructors
 
     public Campaign() {}
@@ -111,5 +114,13 @@ public class Campaign extends AuditableEntity {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public List<Invitation> getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(List<Invitation> invitations) {
+        this.invitations = invitations;
     }
 }

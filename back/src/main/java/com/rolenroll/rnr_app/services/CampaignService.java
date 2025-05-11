@@ -72,7 +72,14 @@ public class CampaignService {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Campagne introuvable"));
 
-        if (!campaign.getUser().getEmail().equals(userDetails.getUsername())) {
+        User currentUser = userService.findByName(userDetails.getUsername());
+
+        boolean isOwner = campaign.getCreatedBy().getName().equals(currentUser.getName());
+        boolean isInvitedPlayer = campaign.getInvitations().stream()
+            .anyMatch(invite -> invite.getUser().getId().equals(currentUser.getId())
+                && invite.getStatus().name().equals("ACCEPTED"));
+
+        if (!isOwner && !isInvitedPlayer) {
             throw new AccessDeniedException("Vous n'êtes pas autorisé à consulter cette campagne");
         }
 
@@ -117,7 +124,7 @@ public class CampaignService {
     }
 
     public List<CampaignDTO> getCampaignsByCurrentUser(UserDetails userDetails) {
-        User currentUser = userService.findByEmail(userDetails.getUsername());
+        User currentUser = userService.findByName(userDetails.getUsername());
         return campaignRepository.findByUserId(currentUser.getId()).stream()
                 .map(campaignMapper::toDTO)
                 .toList();

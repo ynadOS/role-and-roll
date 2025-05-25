@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/refresh", "/api/auth/register").permitAll()
                         .requestMatchers("/api/campaigns/statuses").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/api/campaigns/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/campaigns/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/ws/notifications/**").permitAll() // Permet l'accès à /ws/notifications
                         .requestMatchers(
                                 "/swagger-ui.html",

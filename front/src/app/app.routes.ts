@@ -29,6 +29,7 @@ export const routes: Routes = [
       { path: 'campaigns/create', component: CampaignFormComponent },
       { path: 'campaigns/overview', component: CampaignOverviewComponent},
       { path: 'campaigns/:id', component: CampaignPageComponent},
+      // { path: 'notifications', component: Notification },
       // 🔒 autres routes privées ici
     ]
   }

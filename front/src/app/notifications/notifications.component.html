@@ -1,0 +1,12 @@
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-2">Notifications reçues :</h2>
+  <ul *ngIf="notifications.length > 0; else noNotifs">
+    <li *ngFor="let n of notifications" class="p-2 border-b">
+      {{ n.message }}<br />
+      <small class="text-gray-500">{{ n.type }} – {{ n.createdAt | date:'short' }}</small>
+    </li>
+  </ul>
+  <ng-template #noNotifs>
+    <p>Aucune notification reçue.</p>
+  </ng-template>
+</div>

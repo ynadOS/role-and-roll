@@ -29,6 +29,7 @@ export class NavbarComponent {
   }
 
   ngOnInit(): void {
+    console.log('Navbar loaded');
     if (this.authService.isLoggedIn()) {
       this.authService.getMe().subscribe(user => {
         this.username = user.name;

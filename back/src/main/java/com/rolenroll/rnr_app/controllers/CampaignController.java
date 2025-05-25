@@ -39,8 +39,8 @@ public class CampaignController {
             @ApiResponse(responseCode = "400", description = "Invalid request body")
     })
     @PostMapping
-    public ResponseEntity<CampaignDTO> create(@RequestBody CampaignDTO dto) {
-        return ResponseEntity.ok(campaignService.createCampaign(dto));
+    public ResponseEntity<CampaignDTO> create(@RequestBody CampaignDTO dto, @AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return ResponseEntity.ok(campaignService.createCampaign(dto, userDetails));
     }
 
     @Operation(summary = "Get campaign by ID", description = "Returns a campaign by its ID")

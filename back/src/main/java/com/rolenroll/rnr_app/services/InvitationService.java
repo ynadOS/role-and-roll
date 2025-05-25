@@ -24,17 +24,20 @@ public class InvitationService {
     private final InvitationMapper mapper;
     private final UserRepository userRepository;
     private final CampaignRepository campaignRepository;
+    private final NotificationService notificationService;
 
     public InvitationService(
             InvitationRepository invitationRepository,
             InvitationMapper mapper,
             UserRepository userRepository,
-            CampaignRepository campaignRepository
+            CampaignRepository campaignRepository,
+            NotificationService notificationService
     ) {
         this.invitationRepository = invitationRepository;
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.campaignRepository = campaignRepository;
+        this.notificationService = notificationService;
     }
 
     public InvitationDTO createInvitation(InvitationDTO dto) {
@@ -76,15 +79,39 @@ public class InvitationService {
         invitation.setCreatedBy(creator);
         invitation.setUpdatedBy(creator);
 
-        return mapper.toDto(invitationRepository.save(invitation));
+        Invitation savedInvitation = invitationRepository.save(invitation);
+
+        // 🔔 Notification au joueur invité
+        notificationService.notifyUser(
+            user,
+            "Vous avez été invité à la campagne : " + campaign.getTitle(),
+            "INVITATION",
+            campaign.getId()
+        );
+
+        return mapper.toDto(savedInvitation);
     }
 
     public InvitationDTO acceptInvitation(Long invitationId) {
         Invitation invitation = invitationRepository.findById(invitationId)
                 .orElseThrow(() -> new EntityNotFoundException("Invitation introuvable"));
+
         invitation.setStatus(InvitationStatus.ACCEPTED);
         invitation.setUpdatedAt(LocalDateTime.now());
-        return mapper.toDto(invitationRepository.save(invitation));
+
+        Invitation savedInvitation = invitationRepository.save(invitation);
+
+        // 🔔 Notification au MJ
+        User mj = invitation.getCampaign().getCreatedBy();
+        User player = invitation.getUser();
+        notificationService.notifyUser(
+            mj,
+            player.getName() + " a accepté votre invitation à la campagne : " + invitation.getCampaign().getTitle(),
+            "INVITATION_ACCEPTED",
+            invitation.getCampaign().getId()
+        );
+
+        return mapper.toDto(savedInvitation);
     }
 
     public InvitationDTO declineInvitation(Long invitationId) {
@@ -92,7 +119,20 @@ public class InvitationService {
                 .orElseThrow(() -> new EntityNotFoundException("Invitation introuvable"));
         invitation.setStatus(InvitationStatus.DECLINED);
         invitation.setUpdatedAt(LocalDateTime.now());
-        return mapper.toDto(invitationRepository.save(invitation));
+
+        Invitation savedInvitation = invitationRepository.save(invitation);
+
+        // 🔔 Notification au MJ
+        User mj = invitation.getCampaign().getCreatedBy();
+        User player = invitation.getUser();
+        notificationService.notifyUser(
+            mj,
+            player.getName() + " a refusé votre invitation à la campagne : " + invitation.getCampaign().getTitle(),
+            "INVITATION_DECLINED",
+            invitation.getCampaign().getId()
+        );
+
+        return mapper.toDto(savedInvitation);
     }
 
     public List<InvitationDTO> getInvitationsByCampaign(Long campaignId) {

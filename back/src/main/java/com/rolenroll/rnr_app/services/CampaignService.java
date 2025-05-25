@@ -42,8 +42,8 @@ public class CampaignService {
                 .toList();
     }
 
-    public CampaignDTO createCampaign(CampaignDTO dto) {
-        User currentUser = userService.getCurrentUser();
+    public CampaignDTO createCampaign(CampaignDTO dto, UserDetails userDetails) {
+        User currentUser = userService.findByName(userDetails.getUsername());
 
         Campaign campaign = new Campaign();
         campaign.setTitle(dto.title());

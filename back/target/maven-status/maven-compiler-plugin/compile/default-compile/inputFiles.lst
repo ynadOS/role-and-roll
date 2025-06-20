@@ -8,6 +8,7 @@
 /app/src/main/java/com/rolenroll/rnr_app/controllers/InvitationController.java
 /app/src/main/java/com/rolenroll/rnr_app/controllers/NotificationController.java
 /app/src/main/java/com/rolenroll/rnr_app/controllers/RefreshTokenController.java
+/app/src/main/java/com/rolenroll/rnr_app/controllers/StatusController.java
 /app/src/main/java/com/rolenroll/rnr_app/controllers/UniverseController.java
 /app/src/main/java/com/rolenroll/rnr_app/dto/CampaignDTO.java
 /app/src/main/java/com/rolenroll/rnr_app/dto/InvitationDTO.java
@@ -63,6 +64,7 @@
 /app/src/main/java/com/rolenroll/rnr_app/repositories/PlayerRepository.java
 /app/src/main/java/com/rolenroll/rnr_app/repositories/RefreshTokenRepository.java
 /app/src/main/java/com/rolenroll/rnr_app/repositories/SessionRepository.java
+/app/src/main/java/com/rolenroll/rnr_app/repositories/StatusRepository.java
 /app/src/main/java/com/rolenroll/rnr_app/repositories/StoryRepository.java
 /app/src/main/java/com/rolenroll/rnr_app/repositories/UniverseRepository.java
 /app/src/main/java/com/rolenroll/rnr_app/repositories/UserRepository.java

@@ -67,9 +67,11 @@ com/rolenroll/rnr_app/controllers/InvitationController.class
 com/rolenroll/rnr_app/entities/Player.class
 com/rolenroll/rnr_app/mappers/StoryMapper.class
 com/rolenroll/rnr_app/dto/UniverseDTO.class
+com/rolenroll/rnr_app/controllers/StatusController.class
 com/rolenroll/rnr_app/dto/InvitationDTO.class
 com/rolenroll/rnr_app/entities/Campaign.class
 com/rolenroll/rnr_app/security/CustomUserDetailsService.class
+com/rolenroll/rnr_app/repositories/StatusRepository.class
 com/rolenroll/rnr_app/repositories/PlayerRepository.class
 com/rolenroll/rnr_app/controllers/UniverseController.class
 com/rolenroll/rnr_app/entities/StatusInvitation.class

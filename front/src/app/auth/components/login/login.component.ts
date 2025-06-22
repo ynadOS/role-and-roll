@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -17,17 +17,17 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   loginForm: FormGroup;
   error: string | null = null;
   success: boolean = false;
   isLoading = false;
   countdown = 2;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],

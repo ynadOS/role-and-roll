@@ -12,7 +12,7 @@ export class ModalComponent implements AfterViewInit, OnChanges {
   @Input() isOpen = false;
   @Input() title = '';
   @Input() backdropClosable = true;
-  @Output() close = new EventEmitter<void>();
+  @Output() modalClose = new EventEmitter<void>();
   @Input() escClosable: boolean = true;
 
   @ViewChild('modalContainer') modalContainerRef!: ElementRef;
@@ -38,8 +38,8 @@ export class ModalComponent implements AfterViewInit, OnChanges {
   }
 
   emitClose(): void {
-    if (this.close.observed) {
-      this.close.emit();
+    if (this.modalClose.observed) {
+      this.modalClose.emit();
     }
   }
 

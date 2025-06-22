@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environments';
@@ -21,9 +21,9 @@ export interface Campaign {
   providedIn: 'root'
 })
 export class CampaignService {
-  private apiUrl = `${environment.apiUrl}/campaigns`;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = `${environment.apiUrl}/campaigns`;
 
   createCampaign(campaign: Campaign): Observable<any> {
     return this.http.post(this.apiUrl, campaign);

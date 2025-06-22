@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -21,6 +21,11 @@ interface Universe {
   imports: [FormsModule, CommonModule, RouterModule]
 })
 export class CampaignFormComponent implements OnInit, OnChanges {
+  private campaignService = inject(CampaignService);
+  private authService = inject(AuthService);
+  private universeService = inject(UniversesService);
+  private router = inject(Router);
+
   @Input() campaign?: Campaign;
   @Output() formSubmitted = new EventEmitter<void>();
   @Output() campaignUpdated = new EventEmitter<void>();
@@ -35,13 +40,6 @@ export class CampaignFormComponent implements OnInit, OnChanges {
   isSubmitting = false;
   error = '';
   creationSuccess = false;
-
-  constructor(
-    private campaignService: CampaignService,
-    private authService: AuthService,
-    private universeService: UniversesService,
-    private router: Router
-  ) {}
   ngOnInit(): void {
     this.universeService.getUniverses().subscribe({
       next: (data) => {

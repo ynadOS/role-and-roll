@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Campaign, CampaignService } from '../../../services/campaigns.service';
 import { CommonModule } from '@angular/common';
@@ -14,17 +14,15 @@ import { InvitationsService } from '../../../services/invitations.service';
   styleUrls: ['./campaign-page.component.css']
 })
 export class CampaignPageComponent implements OnInit, AfterViewInit {
+  private route = inject(ActivatedRoute);
+  private campaignService = inject(CampaignService);
+  private invitationService = inject(InvitationsService);
+
   campaignId!: number;
   campaign?: Campaign;
   isModalOpen = false;
   inviteUsername = '';
   invitations: any[] = [];
-
-  constructor(
-    private route: ActivatedRoute,
-    private campaignService: CampaignService,
-    private invitationService: InvitationsService
-  ) {}
 
   ngOnInit(): void {
     this.campaignId = +this.route.snapshot.paramMap.get('id')!;

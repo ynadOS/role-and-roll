@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, PLATFORM_ID, OnInit, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -10,7 +10,10 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  private platformId = inject<Object>(PLATFORM_ID);
+  authService = inject(AuthService);
+
   username?: string;
   isDarkMode = false;
   isMenuOpen = false;
@@ -18,7 +21,7 @@ export class NavbarComponent {
   isMobileMenuOpen = false;
   isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, public authService: AuthService) {
+  constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.isBrowser) {
       const savedTheme = localStorage.getItem('theme');

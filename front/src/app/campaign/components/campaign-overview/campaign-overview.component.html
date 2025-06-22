@@ -15,7 +15,7 @@
         [title]="'Confirmation de suppression'"
         [escClosable]="true"
         [backdropClosable]="true"
-        (close)="closeDeleteModal()"
+        (modalClose)="closeDeleteModal()"
       >
         <p>Êtes-vous sûr de vouloir supprimer cette campagne ? Cette action est irréversible. Si des personnages joueurs sont liés à cette campagne, vous ne pourrez pas la supprimer.</p>
         <div class="flex justify-end gap-2 mt-4">
@@ -43,7 +43,7 @@
     [title]="'Modifier la campagne'"
     [escClosable]="true"
     [backdropClosable]="true"
-    (close)="closeEditModal()"
+    (modalClose)="closeEditModal()"
   >
     <app-campaign-form
       [campaign]="campaignToEdit"
@@ -58,7 +58,7 @@
     [title]="'Créer une campagne'"
     [escClosable]="true"
     [backdropClosable]="true"
-    (close)="closeCreateModal()"
+    (modalClose)="closeCreateModal()"
   >
     <app-campaign-form
       [statuses]="statuses"

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router'; // Pour utiliser router-outlet
 import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClient } from '@angular/common/http';
@@ -12,8 +12,9 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
-  constructor(private authService: AuthService) {}
+export class AppComponent implements OnInit {
+  private authService = inject(AuthService);
+
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {

@@ -27,6 +27,9 @@ export interface AuthResponse {
   providedIn: 'root',
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private apiUrl = `${environment.apiUrl}/auth`;
   private platformId = inject(PLATFORM_ID);
 
@@ -35,8 +38,6 @@ export class AuthService {
 
   private refreshInProgress = false;
   private refreshTokenSubject = new ReplaySubject<string>(1);
-
-  constructor(private http: HttpClient, private router: Router) {}
 
   login(data: AuthRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);

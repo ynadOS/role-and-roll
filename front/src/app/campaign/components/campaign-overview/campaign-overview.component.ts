@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewChecked, inject } from '@angular/core';
 import { Campaign, CampaignService } from '../../../services/campaigns.service';
 import { AuthService } from '../../../services/auth.service';
 import { RouterModule } from '@angular/router';
@@ -16,6 +16,9 @@ import { ModalComponent } from '../../../shared/components/modal/modal/modal.com
   styleUrls: ['./campaign-overview.component.css']
 })
 export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
+  private campaignService = inject(CampaignService);
+  private authService = inject(AuthService);
+
   campaigns: any[] = [];
   statuses: { value: string, label: string }[] = [];
   universes: any[] = [];
@@ -24,12 +27,6 @@ export class CampaignOverviewComponent implements OnInit, AfterViewChecked {
   isDeleteModalOpen = false; // Contrôle de la modale
   selectedCampaignId: number | null = null;
   @ViewChild('modalBackdrop') modalBackdrop!: ElementRef;
-
-
-  constructor(
-    private campaignService: CampaignService,
-    private authService: AuthService
-  ) {}
 
   ngOnInit(): void {
     this.campaignService.getMyCampaigns().subscribe({

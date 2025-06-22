@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InvitationsService {
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
 
   sendInvitation(data: { userName: string; campaignId: number; createdById: number }): Observable<any> {
     return this.http.post(`${environment.apiUrl}/invitations`, data);

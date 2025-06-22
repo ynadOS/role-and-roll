@@ -1,1 +1,3 @@
 com/rolenroll/rnr_app/RnrAppApplicationTests.class
+com/rolenroll/rnr_app/entities/UserTest.class
+com/rolenroll/rnr_app/dummy/DummyTest.class

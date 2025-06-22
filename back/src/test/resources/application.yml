@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rnr_app
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  liquibase:
+    enabled: false
+  flyway:
+    enabled: false
+
+jwt:
+  secret: a-very-strong-secret-key-for-tests-1234567890
+  expiration: 900000
+  refresh-expiration: 14400000

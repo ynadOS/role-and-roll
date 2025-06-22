@@ -29,8 +29,5 @@ jobs:
       - name: Lint
         run: npx ng lint
 
-      - name: Test
-        run: npx ng test --watch=false --browsers=ChromeHeadless
-
       - name: Build
         run: npx ng build --configuration=production

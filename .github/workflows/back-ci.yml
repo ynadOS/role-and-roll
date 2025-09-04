@@ -2,6 +2,10 @@
 
 name: Back CI
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     paths:
@@ -19,16 +23,31 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build & Test
+        run: mvn -B -ntp clean verify
 
-      - name: Run Tests
-        run: mvn test
+      - name: Compute image name & tags
+        id: meta
+        run: |
+          REPO_LC="${GITHUB_REPOSITORY,,}"
+          echo "image=ghcr.io/${REPO_LC}/back" >> "$GITHUB_OUTPUT"
+          echo "tags=latest,${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Build & Push Docker image with Jib (GHCR)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mvn -B -ntp -DskipTests \
+            -Djib.to.image=${{ steps.meta.outputs.image }} \
+            -Djib.to.tags=${{ steps.meta.outputs.tags }} \
+            -Djib.to.auth.username=${{ github.actor }} \
+            -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} \
+            jib:build

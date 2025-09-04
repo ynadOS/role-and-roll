@@ -34,20 +34,3 @@ jobs:
 
       - name: Build & Test
         run: mvn -B -ntp clean verify
-
-      - name: Compute image name & tags
-        id: meta
-        run: |
-          REPO_LC="${GITHUB_REPOSITORY,,}"
-          echo "image=ghcr.io/${REPO_LC}/back" >> "$GITHUB_OUTPUT"
-          echo "tags=latest,${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
-
-      - name: Build & Push Docker image with Jib (GHCR)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          mvn -B -ntp -DskipTests \
-            -Djib.to.image=${{ steps.meta.outputs.image }} \
-            -Djib.to.tags=${{ steps.meta.outputs.tags }} \
-            -Djib.to.auth.username=${{ github.actor }} \
-            -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} \
-            jib:build

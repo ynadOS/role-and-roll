@@ -39,7 +39,12 @@ jobs:
         run: |
           REPO_LC="${GITHUB_REPOSITORY,,}"
           echo "image=ghcr.io/${REPO_LC}/back" >> "$GITHUB_OUTPUT"
-          echo "tags=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "tags=latest" >> "$GITHUB_OUTPUT"
+          else
+            echo "tags=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build & Push Docker image with Jib (GHCR)
         if: github.event_name == 'push'

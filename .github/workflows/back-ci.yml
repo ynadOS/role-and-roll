@@ -39,17 +39,19 @@ jobs:
         run: |
           REPO_LC="${GITHUB_REPOSITORY,,}"
           echo "image=ghcr.io/${REPO_LC}/back" >> "$GITHUB_OUTPUT"
-          echo "tags=latest,${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          echo "tags=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Build & Push Docker image with Jib (GHCR)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push'
         run: |
+          # Debug flags for Jib/Maven output
+          MAVEN_OPTS="-Djib.console=plain -Dorg.slf4j.simpleLogger.log.com.google.cloud.tools.jib=debug"
           mvn -B -ntp -DskipTests \
             -Djib.to.image=${{ steps.meta.outputs.image }} \
             -Djib.to.tags=${{ steps.meta.outputs.tags }} \
             -Djib.to.auth.username=${{ github.actor }} \
             -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} \
-            jib:build
+            jib:build -X
 
       - name: Build & Test with Maven
         run: mvn -B -ntp clean verify

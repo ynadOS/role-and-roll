@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: role-and-roll-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: ghcr.io/ynados/role-and-roll/back:7ea3915c18b7ac54d74de06df57f9503db49b9c0
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "256Mi"  # Maximum memory allowed
+              cpu: "200m"       # Maximum CPU allowed (200 milliCPU)
+            requests:
+              memory: "128Mi"  # Initial memory request
+              cpu: "100m"       # Initial CPU request
+          livenessProbe:
+            httpGet:
+              path: /                # The path to check for the liveness probe
+              port: 80               # The port to check on
+            initialDelaySeconds: 15  # Wait this many seconds before starting the probe
+            periodSeconds: 10        # Check the probe every 10 seconds
+          readinessProbe:
+            httpGet:
+              path: /                # The path to check for the readiness probe
+              port: 80               # The port to check on
+            initialDelaySeconds: 5   # Wait this many seconds before starting the probe
+            periodSeconds: 5

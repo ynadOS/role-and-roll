@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environments';
+import { map } from 'rxjs/operators';
 
 export interface Campaign {
   id?: number;
@@ -31,6 +32,15 @@ export class CampaignService {
 
   getAll(): Observable<Campaign[]> {
     return this.http.get<Campaign[]>(this.apiUrl);
+  }
+
+  getAllCampaignIds(): Observable<number[]> {
+    return this.http.get<Campaign[]>(this.apiUrl)
+      .pipe(
+        map(campaigns => campaigns
+          .filter(c => c.id !== undefined && c.id !== null)
+          .map(c => c.id!))
+      );
   }
 
   getById(id: number): Observable<Campaign> {

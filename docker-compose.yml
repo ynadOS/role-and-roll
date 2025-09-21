@@ -16,9 +16,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
-    profiles:
-      - dev
-      - prod
 
   backend:
     build:
@@ -36,8 +33,6 @@ services:
       SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/rnr_app
       SPRING_FLYWAY_USER: admin
       SPRING_FLYWAY_PASSWORD: admin
-    profiles:
-      - prod
 
   frontend:
     build:
@@ -45,44 +40,7 @@ services:
     container_name: frontend
     ports:
       - "4200:80"
-    profiles:
-      - prod
 
-  frontend-dev:
-    build:
-      context: ./front
-      dockerfile: Dockerfile.dev
-    container_name: frontend-dev
-    ports:
-      - "4200:4200"
-    volumes:
-      - ./front:/app
-      - /app/node_modules
-    command: npx ng serve --host 0.0.0.0
-    profiles:
-      - dev
-
-  backend-dev:
-    build:
-      context: ./back
-      dockerfile: Dockerfile.dev
-    container_name: backend-dev
-    working_dir: /app
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./back:/app
-    command: mvn spring-boot:run
-    # command:  ["tail", "-f", "/dev/null"]
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/rnr_app
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: admin
-      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/rnr_app
-      SPRING_FLYWAY_USER: admin
-      SPRING_FLYWAY_PASSWORD: admin
-    profiles:
-      - dev
 
 volumes:
   db_data:
